@@ -44,4 +44,9 @@ child_mortality <- child_mortality |>
 # Refine GDP_per_Capita dataset
 GDP_per_Cap <- GDP_per_Cap |>
   select(country, `X1950`:`X2100`)
+
+#Renaming cols
+
+names(child_mortality) <- gsub("^X", "", names(child_mortality))
+names(GDP_per_Cap) <- gsub("^X", "", names(GDP_per_Cap))
 ```
