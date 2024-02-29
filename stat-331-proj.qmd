@@ -53,3 +53,32 @@ GDP_per_Cap <- GDP_per_Cap |>
   rename_with(~ str_replace(., "^X", ""), .cols = everything())
 
 ```
+
+### pivoting longer
+
+```{r}
+child_mortality_long <- child_mortality |>
+  pivot_longer(
+    cols = !country,
+    names_to = "Year",
+    values_to = "Mortality Rate"
+  )
+
+GDP_per_Cap_long <- GDP_per_Cap |>
+  pivot_longer(
+    cols = !country,
+    names_to = "Year",
+    values_to = "GDP Per Capita"
+  )
+
+```
+
+### To Do:
+
+-   cleaning:
+
+    -   remove NA's
+
+    -   will need to convert year, GDP to numeric
+
+    -   will need to figure out a way to handle when we have 16000 vs 16k etc... maybe we can str_replace k with "000" before converting to numeric
