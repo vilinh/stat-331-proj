@@ -7,9 +7,41 @@ self-contained: true
 
 ## Testing
 
-Hi
+## Reading in data and initial cleaning
 
-hi !
+```{r}
+library(tidyverse)
+library(here)
 
-hi
+child_mortality <- read.csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
+GDP_per_Cap <- read.csv("gdp_pcap.csv")
 
+```
+
+### Sneak peek
+
+```{r}
+head(child_mortality)
+head(GDP_per_Cap)
+
+
+# mortality NAs 
+colSums(is.na(child_mortality))
+
+# GDP Nas
+colSums(is.na(GDP_per_Cap))
+```
+
+### Let's start cleaning
+
+-   some countries did not exist until 1950 (assumed they get their independence from a colonial power this year, so refine data frames to remove cols X1800 - X 1949
+
+```{r}
+# Refine child_mortality dataset
+child_mortality <- child_mortality |>
+  select(country, `X1950`:`X2100`)
+
+# Refine GDP_per_Capita dataset
+GDP_per_Cap <- GDP_per_Cap |>
+  select(country, `X1950`:`X2100`)
+```
