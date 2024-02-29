@@ -34,7 +34,7 @@ colSums(is.na(GDP_per_Cap))
 
 ### Let's start cleaning
 
--   some countries did not exist until 1950 (assumed they get their independence from a colonial power this year, so refine data frames to remove cols X1800 - X 1949
+-   Some countries did not exist until 1950 (assumed they get their independence from a colonial power this year, so refine data frames to remove cols X1800 - X 1949
 
 ```{r}
 # Refine child_mortality dataset
