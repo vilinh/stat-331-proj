@@ -7,4 +7,10 @@ self-contained: true
 
 ## Testing
 
+<<<<<<< HEAD
 Hi
+=======
+hi !
+
+hi
+>>>>>>> 82497b0318ccfaa693f21c0b1625df0539fa99f0
