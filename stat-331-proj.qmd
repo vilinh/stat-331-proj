@@ -117,10 +117,25 @@ joined_df
 ```
 
 ## Data Description
-For our two data sets, we decided to look at the relationship between child mortality and GDP per capita. The data in the child mortality data set consists of a combination of multiple data sets; data from 1800 to 1950 was from v7 of Gapminder, data from 1950 to 2016 was taken from UNIGME, a data collaboration project between UNICEF, WHO, UN Population Division, and the World Bank. Data from 1950 to 2100 was taken from UN POP, World Population Prospects 2019. The data in the GDP per capita data set is comprised of a combination of GDP per capita data from the World Bank, the Maddison Project Database, and the Penn World Table. We took these two data sets and joined them to create one data set that displays child mortality rate, GDP per capita, year, and country.
+For our two data sets, we decided to look at the relationship between child mortality 
+and GDP per capita. The data in the child mortality data set consists of a combination 
+of multiple data sets; data from 1800 to 1950 was from v7 of Gapminder, data from 1950 
+to 2016 was taken from UNIGME, a data collaboration project between UNICEF, WHO, 
+UN Population Division, and the World Bank. Data from 1950 to 2100 was taken from UN POP, 
+World Population Prospects 2019. The data in the GDP per capita data set is comprised of 
+a combination of GDP per capita data from the World Bank, the Maddison Project Database, 
+and the Penn World Table. We took these two data sets and joined them to create one data 
+set that displays child mortality rate, GDP per capita, year, and country.
 
 ### Data & Variable Description
-The first variable in our joined data set is "country", which specifies the country that the following data describes. The next variable is "Year", which specifies the year in which the following data was collected. In our data, we limited our "Year" variable from 1950-present because many countries did not exist and therefore had missing data prior to then. The "Mortality Rate" variable represents the number of deaths of children under 5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the gross domestic product per person. The data for "GDP Per Capita" was also adjusted for differences in purchasing power.
+The first variable in our joined data set is "country", which specifies the country that 
+the following data describes. The next variable is "Year", which specifies the year in 
+which the following data was collected. In our data, we limited our "Year" variable from 
+1950-present because many countries did not exist and therefore had missing data prior to 
+then. The "Mortality Rate" variable represents the number of deaths of children under 
+5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the 
+gross domestic product per person. The data for "GDP Per Capita" was also adjusted for 
+differences in purchasing power.
 
 ### Hypothesized Relationship
 
