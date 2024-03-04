@@ -44,7 +44,7 @@ sum(is.na(GDP_per_Cap))
 ## Let's Start Cleaning
 
 ### Limit Range
--   Some countries did not exist until 1950 (assumed they get their independence from a colonial power this year, so refine data frames to remove cols X1800 - X 1949
+-   Some countries did not exist until 1950 (assumed they get their independence from a colonial power this year, so refine data frames to remove cols X1800 - X 1949)
 
 ```{r}
 # Refine child_mortality dataset
@@ -138,14 +138,15 @@ gross domestic product per person. The data for "GDP Per Capita" was also adjust
 differences in purchasing power.
 
 ### Hypothesized Relationship
-We think the an increase in GDP will correlate with a decrease in child mortality rates.Additionally we am expecting to see a dramatic decrease in child mortality over time. An article from the World Health Organization reported the rate has fallen over 59% since 1990. (https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/child-mortality-and-causes-of-death#:~:text=Since%201990%2C%20the%20global%20under,to%202.3%20million%20in%202021.)  
-Additionally there will also be a massive increased in GDP due the industrialization and growth of industry. 
+We think that an increase in GDP will correlate with a decrease in child mortality rates as countries with higher GDP tend to have better resources
+that can improve health like better living conditions, healthcare, etc.
+Additionally we are expecting to see a dramatic decrease in child mortality over time. An [article](https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/child-mortality-and-causes-of-death#:~:text=Since%201990%2C%20the%20global%20under,to%202.3%20million%20in%202021) from the World Health Organization reported the rate has fallen over 59% since 1990. 
 
 ### Cleaning Process & Decisions
 We decided to limit our examination to the 1950s-present because some countries
 did not exist then, and therefore that took care of a lot of the NA values. We also
 renamed the years to make it more easily readable by removing the X in front of the
-number. We pivoted the data to be longer so it can be easily analyzed.
+number. We pivoted the data to be longer so it can be easily analyzed (on mortality rate and GDP per capita for each year).
 Then, we converted the values to be numeric as they represent quantitative data.
 For the GDP, we had to convert some values that had a "k" in it to the actual multiple
 of 1000.
