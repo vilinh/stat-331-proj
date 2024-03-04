@@ -1,23 +1,33 @@
 ---
-title: "final-proj"
-format: html
-editor: visual
+title: "Final Project"
+subtitle: "Project Proposal"
+format: 
+  html:
+    embed-resources: true
+    code-tools: true
+    toc: true
+editor: source
+execute: 
+  error: true
+  echo: true
+  message: false
+  warning: false
 self-contained: true
+number-sections: true
 ---
 
-## Testing
+## Project Proposal - Data {.unnumbered}
 
-## Reading in data and initial cleaning
+### Reading in Data {.unnumbered}
 
 ```{r}
 library(tidyverse)
 library(here)
 child_mortality <- read.csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
 GDP_per_Cap <- read.csv("gdp_pcap.csv")
-
 ```
 
-### Sneak peek
+### Data at a Glance {.unnumbered}
 
 ```{r}
 head(child_mortality)
@@ -25,14 +35,15 @@ head(GDP_per_Cap)
 
 
 # mortality NAs 
-colSums(is.na(child_mortality))
+sum(is.na(child_mortality))
 
-# GDP Nas
-colSums(is.na(GDP_per_Cap))
+# GDP NAs
+sum(is.na(GDP_per_Cap))
 ```
 
-### Let's start cleaning
+## Let's Start Cleaning
 
+### Limit Range
 -   Some countries did not exist until 1950 (assumed they get their independence from a colonial power this year, so refine data frames to remove cols X1800 - X 1949
 
 ```{r}
@@ -43,5 +54,99 @@ child_mortality <- child_mortality |>
 # Refine GDP_per_Capita dataset
 GDP_per_Cap <- GDP_per_Cap |>
   select(country, `X1950`:`X2100`)
+
+#Renaming cols
+child_mortality <- child_mortality|>
+  rename_with(~ str_replace(., "^X", ""), .cols = everything())
+
+GDP_per_Cap <- GDP_per_Cap |>
+  rename_with(~ str_replace(., "^X", ""), .cols = everything())
+
 ```
+
+
+### Pivoting Longer
+
+```{r}
+child_mortality_long <- child_mortality |>
+  pivot_longer(
+    cols = !country,
+    names_to = "Year",
+    values_to = "Mortality Rate"
+  )
+
+GDP_per_Cap_long <- GDP_per_Cap |>
+  pivot_longer(
+    cols = !country,
+    names_to = "Year",
+    values_to = "GDP Per Capita"
+  )
+
+```
+
+### Convert to Numeric 
+```{r}
+# function converts numbers in "XXk" format to numeric
+# eg "89k" -> 89,000
+convert_k_to_number <- function(x) {
+  if (grepl("k", x, fixed = TRUE)) {
+    numeric_value <- as.numeric(sub("k", "", x)) * 1000
+  } else {
+    numeric_value <- as.numeric(x)
+  }
+  return(numeric_value)
+}
+```
+
+```{r}
+# converts mortality rate to numeric
+child_mortality_long <- child_mortality_long |>
+  filter(!is.na(child_mortality_long$`Mortality Rate`)) |>
+  mutate(`Mortality Rate` = as.numeric(`Mortality Rate`))
+
+# converts gdp to numeric
+GDP_per_Cap_long <- GDP_per_Cap_long |>
+  mutate(`GDP Per Capita` = map(`GDP Per Capita`, convert_k_to_number))
+```
+
+### Joining Datasets
+```{r}
+joined_df <- inner_join(child_mortality_long, GDP_per_Cap_long, join_by(country, Year))
+
+joined_df
+```
+
+## Data Description
+For our two data sets, we decided to look at the relationship between child mortality 
+and GDP per capita. The data in the child mortality data set consists of a combination 
+of multiple data sets; data from 1800 to 1950 was from v7 of Gapminder, data from 1950 
+to 2016 was taken from UNIGME, a data collaboration project between UNICEF, WHO, 
+UN Population Division, and the World Bank. Data from 1950 to 2100 was taken from UN POP, 
+World Population Prospects 2019. The data in the GDP per capita data set is comprised of 
+a combination of GDP per capita data from the World Bank, the Maddison Project Database, 
+and the Penn World Table. We took these two data sets and joined them to create one data 
+set that displays child mortality rate, GDP per capita, year, and country.
+
+### Data & Variable Description
+The first variable in our joined data set is "country", which specifies the country that 
+the following data describes. The next variable is "Year", which specifies the year in 
+which the following data was collected. In our data, we limited our "Year" variable from 
+1950-present because many countries did not exist and therefore had missing data prior to 
+then. The "Mortality Rate" variable represents the number of deaths of children under 
+5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the 
+gross domestic product per person. The data for "GDP Per Capita" was also adjusted for 
+differences in purchasing power.
+
+### Hypothesized Relationship
+We think the an increase in GDP will correlate with a decrease in child mortality rates.Additionally we am expecting to see a dramatic decrease in child mortality over time. An article from the World Health Organization reported the rate has fallen over 59% since 1990. (https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/child-mortality-and-causes-of-death#:~:text=Since%201990%2C%20the%20global%20under,to%202.3%20million%20in%202021.)  
+Additionally there will also be a massive increased in GDP due the industrialization and growth of industry. 
+
+### Cleaning Process & Decisions
+We decided to limit our examination to the 1950s-present because some countries
+did not exist then, and therefore that took care of a lot of the NA values. We also
+renamed the years to make it more easily readable by removing the X in front of the
+number. We pivoted the data to be longer so it can be easily analyzed.
+Then, we converted the values to be numeric as they represent quantitative data.
+For the GDP, we had to convert some values that had a "k" in it to the actual multiple
+of 1000.
 
