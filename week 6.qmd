@@ -1,0 +1,56 @@
+---
+title: "week6"
+format: html
+editor: visual
+---
+
+## git
+
+repo: folder- repository for a single project
+
+cloning: creates exact copy of what's in cloud, locally on PC
+
+might like to make changes to local file
+
+-   provide lables for changes and commit them
+
+-   log of these changes is called 'git commit'
+
+pull chnages down from others' commits
+
+commit before you push, pull before you push
+
+new project:
+
+1.  clone proj or create new repo
+2.  make new changes
+3.  commit changes
+4.  pull changes from remote repo
+5.  resolve merge conflicts
+6.  push
+
+existing local repo:
+
+1.  pull repo
+2.  make chnages
+3.  commit chnages
+4.  pull changes again
+5.  resolve merge conflicts
+
+```{r}
+library(usethis)
+library(gitcreds)
+
+use_git_config(user.name = "izzyphraner123", user.email = "izzy.phraner@gmail.com")
+## get my token
+create_github_token()
+gitcreds_set()
+
+git_sitrep()
+```
+
+token : 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
+
+```{r}
+
+```
