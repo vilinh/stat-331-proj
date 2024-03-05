@@ -3497,7 +3497,7 @@ vertical-align: -.125em;
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># converts gdp to numeric</span></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>GDP_per_Cap_long <span class="ot">&lt;-</span> GDP_per_Cap_long <span class="sc">|&gt;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">GDP Per Capita</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">map</span>(<span class="st">`</span><span class="at">GDP Per Capita</span><span class="st">`</span>, convert_k_to_number))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">GDP Per Capita</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sapply</span>(<span class="st">`</span><span class="at">GDP Per Capita</span><span class="st">`</span>, convert_k_to_number))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="joining-datasets" class="level3" data-number="1.4">
@@ -3509,17 +3509,17 @@ vertical-align: -.125em;
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 29,445 × 4
    country     Year  `Mortality Rate` `GDP Per Capita`
-   &lt;chr&gt;       &lt;chr&gt;            &lt;dbl&gt; &lt;list&gt;          
- 1 Afghanistan 1950               416 &lt;dbl [1]&gt;       
- 2 Afghanistan 1951               413 &lt;dbl [1]&gt;       
- 3 Afghanistan 1952               407 &lt;dbl [1]&gt;       
- 4 Afghanistan 1953               401 &lt;dbl [1]&gt;       
- 5 Afghanistan 1954               395 &lt;dbl [1]&gt;       
- 6 Afghanistan 1955               389 &lt;dbl [1]&gt;       
- 7 Afghanistan 1956               383 &lt;dbl [1]&gt;       
- 8 Afghanistan 1957               376 &lt;dbl [1]&gt;       
- 9 Afghanistan 1958               370 &lt;dbl [1]&gt;       
-10 Afghanistan 1959               363 &lt;dbl [1]&gt;       
+   &lt;chr&gt;       &lt;chr&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+ 1 Afghanistan 1950               416             1660
+ 2 Afghanistan 1951               413             1700
+ 3 Afghanistan 1952               407             1730
+ 4 Afghanistan 1953               401             1810
+ 5 Afghanistan 1954               395             1820
+ 6 Afghanistan 1955               389             1820
+ 7 Afghanistan 1956               383             1870
+ 8 Afghanistan 1957               376             1840
+ 9 Afghanistan 1958               370             1910
+10 Afghanistan 1959               363             1930
 # ℹ 29,435 more rows</code></pre>
 </div>
 </div>
@@ -3938,7 +3938,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a><span class="co"># converts gdp to numeric</span></span>
 <span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a>GDP_per_Cap_long <span class="ot">&lt;-</span> GDP_per_Cap_long <span class="sc">|&gt;</span></span>
-<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">GDP Per Capita</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">map</span>(<span class="st">`</span><span class="at">GDP Per Capita</span><span class="st">`</span>, convert_k_to_number))</span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">GDP Per Capita</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sapply</span>(<span class="st">`</span><span class="at">GDP Per Capita</span><span class="st">`</span>, convert_k_to_number))</span>
 <span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a><span class="fu">### Joining Datasets</span></span>

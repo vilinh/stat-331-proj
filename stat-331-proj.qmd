@@ -106,7 +106,7 @@ child_mortality_long <- child_mortality_long |>
 
 # converts gdp to numeric
 GDP_per_Cap_long <- GDP_per_Cap_long |>
-  mutate(`GDP Per Capita` = map(`GDP Per Capita`, convert_k_to_number))
+  mutate(`GDP Per Capita` = sapply(`GDP Per Capita`, convert_k_to_number))
 ```
 
 ### Joining Datasets
