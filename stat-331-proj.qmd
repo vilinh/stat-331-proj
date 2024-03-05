@@ -151,3 +151,33 @@ Then, we converted the values to be numeric as they represent quantitative data.
 For the GDP, we had to convert some values that had a "k" in it to the actual multiple
 of 1000.
 
+## Linear Regression
+
+### 2.1 Data Visualization
+
+Create two visualizations exploring the following:
+
+The relationship between the two quantitative variables changing over time. Get creative!
+
+The relationship between the two quantitative variables you are investigating.
+
+In investigating this relationship, you may want to first average over the years for each country (i.e., one observational row per country since our independence condition would be violated).
+
+#### Relationship between GDP and Child Mortality
+
+
+#### Relationship between GDP and Child Mortality Over Time
+
+
+### 2.2 Linear Regression
+- Fit a simple linear regression model for the relationship between the variables you selected 
+- Similar to your visualization, you will need to define which variable is the response (y) and which variable is the explanatory (x).
+
+### 2.3 Model Fit
+
+Make a nicely formatted table that presents the following:
+
+The variance in the response values
+The variance in the fitted values from your regression model
+The variance in the residuals from your regression model
+Discuss the proportion of the variability in the response values that was accounted for by your regression model. What does this suggest about the “quality” of your model?
