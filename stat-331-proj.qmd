@@ -167,6 +167,7 @@ In investigating this relationship, you may want to first average over the years
 ```{r}
 
 joined_df |>
+  filter(Year <= 2020) |>
   group_by(country) |>
   summarise(
     Avg_Mortality_Rate = mean(`Mortality Rate`, na.rm = TRUE),
@@ -193,6 +194,7 @@ ggplot(joined_df, aes(x = `GDP Per Capita`, y = `Mortality Rate`)) +
 #### Relationship between GDP and Child Mortality Over Time
 ```{r}
 joined_df |>
+  filter(Year <= 2020) |>
   group_by(Year) |>
   summarise(
     Avg_Mortality_Rate = mean(`Mortality Rate`, na.rm = TRUE),
@@ -209,11 +211,15 @@ joined_df |>
 
 ```
 
+- ok, so mortality rate is showing at zero, even though this isn't the case. suspecting it's a scale issue.
+- can try visualizations again but rescaled, or do log trans
+
 
 
 ### 2.2 Linear Regression
 - Fit a simple linear regression model for the relationship between the variables you selected 
 - Similar to your visualization, you will need to define which variable is the response (y) and which variable is the explanatory (x).
+- we want to predict child mortality(y) based off of GDP (x)
 
 ### 2.3 Model Fit
 
