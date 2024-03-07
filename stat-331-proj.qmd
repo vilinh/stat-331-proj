@@ -24,6 +24,7 @@ number-sections: true
 ```{r}
 library(tidyverse)
 library(here)
+library(broom)
 child_mortality <- read_csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
 GDP_per_Cap <- read_csv("gdp_pcap.csv")
 ```
@@ -126,40 +127,26 @@ Additionally we are expecting to see a dramatic decrease in child mortality over
 
 ## Linear Regression
 
-### 2.1 Data Visualization
+### Data Visualization
 
-Create two visualizations exploring the following:
-
-The relationship between the two quantitative variables changing over time. Get creative!
-
-The relationship between the two quantitative variables you are investigating.
-
-In investigating this relationship, you may want to first average over the years for each country (i.e., one observational row per country since our independence condition would be violated).
-
-#### Relationship between GDP and Child Mortality
 ```{r}
-
-joined_df |>
+year_avgs <- joined_df |>
   group_by(country) |>
   summarise(
     Avg_Mortality_Rate = mean(`Mortality Rate`, na.rm = TRUE),
     Avg_GDP_Per_Capita = mean(`GDP Per Capita`, na.rm = TRUE)
-  ) %>%
+  )
+```
+
+
+#### Relationship between GDP and Child Mortality 
+```{r}
+year_avgs |>
   ggplot(aes(x = Avg_GDP_Per_Capita, y = Avg_Mortality_Rate)) +
-  geom_point() +
+  geom_point(alpha = 0.5) +
   theme_minimal() +
   labs(x = "Average GDP Per Capita", y = "Average Mortality Rate",
        title = "Average Mortality Rate vs Average GDP Per Capita by Country")
-
-# not averaged for reference
-ggplot(joined_df, aes(x = `GDP Per Capita`, y = `Mortality Rate`)) +
-  geom_point(alpha = 0.2) +  # alpha for transparency if points overlap
-  theme_minimal() +
-  labs(x = "GDP Per Capita", y = "Mortality Rate",
-       title = "Relationship Between Child Mortality and GDP Per Capita")
-
-# lol yikes we are definitely keeping averages here
-
 ```
 
 
@@ -173,26 +160,32 @@ joined_df |>
   ) |>
   ggplot() +
   geom_line(aes(x = as.numeric(Year), y = Avg_Mortality_Rate, color = "Mortality Rate")) +
-  geom_line(aes(x = as.numeric(Year), y = Avg_GDP_Per_Capita, color = "GDP Per Capita")) +
+  geom_line(aes(x = as.numeric(Year), y = Avg_GDP_Per_Capita/100, color = "GDP Per Capita")) +
   scale_color_manual(values = c("Mortality Rate" = "red", "GDP Per Capita" = "blue")) +
+  scale_y_continuous(sec.axis = sec_axis(~.*100, name = "GDP")) +
   theme_minimal() +
   labs(color = "Variable",
-       title = "Global Average of Child Mortality Rate and GDP Per Capita Over Time",
-       y = "Global Average (Rate or GDP)")
+       title = "Global Average Child Mortality Rate vs GDP Per Capita Over Time",
+       y = "Mortality Rate",
+       x = "Year")
 
 ```
 
-- ok, so mortality rate is showing at zero, even though this isn't the case. suspecting it's a scale issue.
-- can try visualizations again but rescaled, or do log trans
+### Linear Regression
+Here, we create a linear model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP.
+```{r}
+mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
+  data = year_avgs)
+
+tidy(mortalitygdp_lm)
+```
 
 
+### Model Fit
 
-### 2.2 Linear Regression
-- Fit a simple linear regression model for the relationship between the variables you selected 
-- Similar to your visualization, you will need to define which variable is the response (y) and which variable is the explanatory (x).
-- we want to predict child mortality(y) based off of GDP (x)
+To assess how “good” of a regression model you have we are going to look at how much of the variability in the response values were accounted for by your regression.
 
-### 2.3 Model Fit
+The goal of regression is to account for as much variability in the response values as we can. Here, the variance in the fitted values represents the amount of variability in the response that was accounted for by the explanatory variable. The variance in the residuals represents the amount of variability in the responses that has not been accounted for.
 
 Make a nicely formatted table that presents the following:
 
@@ -200,3 +193,14 @@ The variance in the response values
 The variance in the fitted values from your regression model
 The variance in the residuals from your regression model
 Discuss the proportion of the variability in the response values that was accounted for by your regression model. What does this suggest about the “quality” of your model?
+```{r}
+aug <- broom::augment(mortalitygdp_lm)
+variance_table <- data.frame(
+  Variable = c("Response Values", "Fitted Values", "Residuals"),
+  Variance = c(var(aug$Avg_Mortality_Rate), 
+               var(aug$.fitted), 
+               var(aug$.resid))
+)
+variance_table
+```
+
