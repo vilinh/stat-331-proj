@@ -28,8 +28,8 @@ child_mortality <- read_csv("child_mortality_0_5_year_olds_dying_per_1000_born.c
 GDP_per_Cap <- read_csv("gdp_pcap.csv")
 ```
 ## Let's Start Cleaning
-We decided to limit our examination to the 1950s-present because some countries
-did not exist then, and therefore that took care of a lot of the NA values. We pivoted the data to be longer so it can be easily analyzed (on mortality rate and GDP per capita for each year).
+We decided to limit our examination to the 1950s-2020 because some countries
+did not exist then, and therefore that took care of a lot of the NA values. The dataset also has years > 2020, but we wanted to look at how the past data points changed over time without the predicted values. We pivoted the data to be longer so it can be easily analyzed (on mortality rate and GDP per capita for each year).
 Then, we converted the values to be numeric as they represent quantitative data.
 For the GDP, we had to convert some values that had a "k" in it to the actual multiple
 of 1000.
@@ -39,11 +39,11 @@ of 1000.
 ```{r}
 # Refine child_mortality dataset
 child_mortality <- child_mortality |>
-  select(country, `1950`:`2100`)
+  select(country, `1950`:`2020`)
 
 # Refine GDP_per_Capita dataset
 GDP_per_Cap <- GDP_per_Cap |>
-  select(country, `1950`:`2100`)
+  select(country, `1950`:`2020`)
 ```
 
 
@@ -138,7 +138,6 @@ In investigating this relationship, you may want to first average over the years
 ```{r}
 
 joined_df |>
-  filter(Year <= 2020) |>
   group_by(country) |>
   summarise(
     Avg_Mortality_Rate = mean(`Mortality Rate`, na.rm = TRUE),
@@ -165,7 +164,6 @@ ggplot(joined_df, aes(x = `GDP Per Capita`, y = `Mortality Rate`)) +
 #### Relationship between GDP and Child Mortality Over Time
 ```{r}
 joined_df |>
-  filter(Year <= 2020) |>
   group_by(Year) |>
   summarise(
     Avg_Mortality_Rate = mean(`Mortality Rate`, na.rm = TRUE),
