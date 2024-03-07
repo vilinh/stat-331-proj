@@ -138,8 +138,7 @@ gross domestic product per person. The data for "GDP Per Capita" was also adjust
 differences in purchasing power.
 
 ### Hypothesized Relationship
-We think the an increase in GDP will correlate with a decrease in child mortality rates.Additionally we am expecting to see a dramatic decrease in child mortality over time. An article from the World Health Organization reported the rate has fallen over 59% since 1990. (https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/child-mortality-and-causes-of-death#:~:text=Since%201990%2C%20the%20global%20under,to%202.3%20million%20in%202021.)  
-Additionally there will also be a massive increased in GDP due the industrialization and growth of industry. 
+We think the an increase in GDP will correlate with a decrease in child mortality rates.Additionally we am expecting to see a dramatic decrease in child mortality over time. An article from the World Health Organization reported the rate has fallen over 59% since 1990. Additionally there will also be a massive increased in GDP due the industrialization and growth of industry. 
 
 ### Cleaning Process & Decisions
 We decided to limit our examination to the 1950s-present because some countries
