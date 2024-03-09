@@ -190,7 +190,6 @@ To assess how “good” of a regression model you have we are going to look at 
 The goal of regression is to account for as much variability in the response values as we can. Here, the variance in the fitted values represents the amount of variability in the response that was accounted for by the explanatory variable. The variance in the residuals represents the amount of variability in the responses that has not been accounted for.
 
 Make a nicely formatted table that presents the following:
-
 The variance in the response values
 The variance in the fitted values from your regression model
 The variance in the residuals from your regression model
@@ -205,4 +204,4 @@ variance_table <- data.frame(
 )
 variance_table
 ```
-
+Because we know the variance of the response values and the residuals, we can calculate R-squared using the formula R-squared = var(y hat) / var(y), with var(y hat) being the variance of the fitted values and var(y) being the variance of the response values. Plugging these values into our formula, we get an R-squared of approximately 0.3258. This means that our regression model explains approximately 32.58% of the variability of our response values. This indicates that our model may not be of the best quality because there is still a large portion of the variability in the response variable that is unexplained. 
