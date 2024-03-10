@@ -22,6 +22,7 @@ number-sections: true
 ### Reading in Data {.unnumbered}
 
 ```{r}
+# | code-fold: true
 library(tidyverse)
 library(here)
 library(broom)
@@ -35,9 +36,10 @@ Then, we converted the values to be numeric as they represent quantitative data.
 For the GDP, we had to convert some values that had a "k" in it to the actual multiple
 of 1000.
 
-### Limit Range
+
 
 ```{r}
+# | code-fold: true
 # Refine child_mortality dataset
 child_mortality <- child_mortality |>
   select(country, `1950`:`2020`)
@@ -48,9 +50,8 @@ GDP_per_Cap <- GDP_per_Cap |>
 ```
 
 
-### Pivoting Longer
-
 ```{r}
+# | code-fold: true
 child_mortality_long <- child_mortality |>
   pivot_longer(
     cols = !country,
@@ -67,8 +68,9 @@ GDP_per_Cap_long <- GDP_per_Cap |>
 
 ```
 
-### Convert to Numeric 
+ 
 ```{r}
+# | code-fold: true
 # function converts numbers in "XXk" format to numeric
 # eg "89k" -> 89,000
 convert_k_to_number <- function(x) {
@@ -82,6 +84,7 @@ convert_k_to_number <- function(x) {
 ```
 
 ```{r}
+# | code-fold: true
 # converts mortality rate to numeric
 child_mortality_long <- child_mortality_long |>
   filter(!is.na(child_mortality_long$`Mortality Rate`)) |>
@@ -92,8 +95,9 @@ GDP_per_Cap_long <- GDP_per_Cap_long |>
   mutate(`GDP Per Capita` = sapply(`GDP Per Capita`, convert_k_to_number))
 ```
 
-### Joining Datasets
+
 ```{r}
+# | code-fold: true
 joined_df <- inner_join(child_mortality_long, GDP_per_Cap_long, join_by(country, Year))
 ```
 
@@ -130,6 +134,7 @@ Additionally we are expecting to see a dramatic decrease in child mortality over
 ### Data Visualization
 
 ```{r}
+# | code-fold: true
 year_avgs <- joined_df |>
   group_by(country) |>
   summarise(
@@ -141,6 +146,7 @@ year_avgs <- joined_df |>
 
 #### Relationship between GDP and Child Mortality 
 ```{r}
+# | code-fold: true
 year_avgs |>
   ggplot(aes(x = Avg_GDP_Per_Capita, y = Avg_Mortality_Rate)) +
   geom_point(alpha = 0.5) +
@@ -152,6 +158,7 @@ year_avgs |>
 
 #### Relationship between GDP and Child Mortality Over Time
 ```{r}
+# | code-fold: true
 joined_df |>
   group_by(Year) |>
   summarise(
@@ -174,6 +181,7 @@ joined_df |>
 ### Linear Regression
 Here, we create a linear model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP.
 ```{r}
+# | code-fold: true
 mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
   data = year_avgs)
 
@@ -187,12 +195,8 @@ To assess how “good” of a regression model you have we are going to look at 
 
 The goal of regression is to account for as much variability in the response values as we can. Here, the variance in the fitted values represents the amount of variability in the response that was accounted for by the explanatory variable. The variance in the residuals represents the amount of variability in the responses that has not been accounted for.
 
-Make a nicely formatted table that presents the following:
-The variance in the response values
-The variance in the fitted values from your regression model
-The variance in the residuals from your regression model
-Discuss the proportion of the variability in the response values that was accounted for by your regression model. What does this suggest about the “quality” of your model?
 ```{r}
+# | code-fold: true
 aug <- broom::augment(mortalitygdp_lm)
 variance_table <- data.frame(
   Variable = c("Response Values", "Fitted Values", "Residuals"),
@@ -200,6 +204,6 @@ variance_table <- data.frame(
                var(aug$.fitted), 
                var(aug$.resid))
 )
-variance_table
+print(variance_table)
 ```
 Because we know the variance of the response values and the residuals, we can calculate R-squared using the formula R-squared = var(y hat) / var(y), with var(y hat) being the variance of the fitted values and var(y) being the variance of the response values. Plugging these values into our formula, we get an R-squared of approximately 0.3258. This means that our regression model explains approximately 32.58% of the variability of our response values. This indicates that our model may not be of the best quality because there is still a large portion of the variability in the response variable that is unexplained. 
