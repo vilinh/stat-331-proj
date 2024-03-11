@@ -187,13 +187,9 @@ mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
 
 tidy(mortalitygdp_lm)
 ```
-
+$$\hat{y} = 128 - 0.00254x$$
 
 ### Model Fit
-
-To assess how “good” of a regression model you have we are going to look at how much of the variability in the response values were accounted for by your regression.
-
-The goal of regression is to account for as much variability in the response values as we can. Here, the variance in the fitted values represents the amount of variability in the response that was accounted for by the explanatory variable. The variance in the residuals represents the amount of variability in the responses that has not been accounted for.
 
 ```{r}
 # | code-fold: true
@@ -206,4 +202,4 @@ variance_table <- data.frame(
 )
 print(variance_table)
 ```
-Because we know the variance of the response values and the residuals, we can calculate R-squared using the formula R-squared = var(y hat) / var(y), with var(y hat) being the variance of the fitted values and var(y) being the variance of the response values. Plugging these values into our formula, we get an R-squared of approximately 0.3258. This means that our regression model explains approximately 32.58% of the variability of our response values. This indicates that our model may not be of the best quality because there is still a large portion of the variability in the response variable that is unexplained. 
+Because we know the variance of the response values and the residuals, we can calculate R-squared using the formula $R^2 = 1 - \frac{{\text{var}( \hat{y})}}{{\text{var}(y)}}$, with $\hat{y}$ being the variance of the residuals and $y$ being the variance of the response values. Plugging these values into our formula, we get an $R^2$ value of approximately 0.3258. This means that our regression model explains approximately 32.58% of the variability of our response values. This indicates that our model may not be of the best quality because there is still a large portion of the variability in the response variable that is unexplained. 
