@@ -120,7 +120,9 @@ which the following data was collected. In our data, we limited our "Year" varia
 then. The "Mortality Rate" variable represents the number of deaths of children under 
 5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the 
 gross domestic product per person. The data for "GDP Per Capita" was also adjusted for 
-differences in purchasing power.
+differences in purchasing power. According to the International Monetary Fund, GDP is a monetary measure of the market value of all the final goods and services produced in a specific time period by a country or countries. GDP is  often used by the government of a single country to measure its economic health.(https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/gross-domestic-product-GDP)
+
+
 
 ### Hypothesized Relationship
 
@@ -188,7 +190,7 @@ mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
 tidy(mortalitygdp_lm)
 ```
 $$\hat{y} = 128 - 0.00254x$$
-
+Based on the results of our linear model, we find that child deaths when GDP is zero are 128.4. We round this to ~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit ($1000 USD) increase in GDP reduces child mortality by -0.0025 on average. This interpretation is not terribly straighforward, due to the different scales of the variables. 
 ### Model Fit
 
 ```{r}
