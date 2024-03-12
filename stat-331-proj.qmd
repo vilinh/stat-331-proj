@@ -24,6 +24,8 @@ number-sections: true
 library(tidyverse)
 library(here)
 library(broom)
+library(knitr)
+
 child_mortality <- read_csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
 GDP_per_Cap <- read_csv("gdp_pcap.csv")
 ```
@@ -88,7 +90,8 @@ GDP_per_Cap_long <- GDP_per_Cap_long |>
 
 ```{r}
 # | code-fold: true
-joined_df <- inner_join(child_mortality_long, GDP_per_Cap_long, join_by(country, Year))
+joined_df <- inner_join(child_mortality_long, GDP_per_Cap_long, join_by(country, Year)) |>
+  mutate(Year = as.numeric(Year))
 ```
 
 ## Data Description
@@ -106,7 +109,7 @@ We decided to limit our examination to the 1950s-2020 because some countries
 did not exist then, and therefore that took care of a lot of the NA values. The dataset also has years > 2020, but we wanted to look at how the past data points changed over time without the predicted values. We pivoted the data to be longer so it can be easily analyzed (on mortality rate and GDP per capita for each year).
 Then, we converted the values to be numeric as they represent quantitative data.
 For the GDP, we had to convert some values that had a "k" in it to the actual multiple
-of 1000.
+of 1000. The final dataset has 195 different countries, spanning across 71 years.
 
 ### Variable Description
 The first variable in our joined data set is "country", which specifies the country that 
@@ -116,7 +119,7 @@ which the following data was collected. In our data, we limited our "Year" varia
 then. The "Mortality Rate" variable represents the number of deaths of children under 
 5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the 
 gross domestic product per person. The data for "GDP Per Capita" was also adjusted for 
-differences in purchasing power. According to the International Monetary Fund, GDP is a monetary measure of the market value of all the final goods and services produced in a specific time period by a country or countries. GDP is  often used by the government of a single country to measure its economic health.(https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/gross-domestic-product-GDP)
+differences in purchasing power. According to the International Monetary Fund, GDP is a monetary measure of the market value of all the final goods and services produced in a specific time period by a country or countries. [GDP](https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/gross-domestic-product-GDP) is  often used by the government of a single country to measure its economic health. 
 
 
 
@@ -131,9 +134,7 @@ Additionally we are expecting to see a dramatic decrease in child mortality over
 
 ### Data Visualization
 
-To visualize the data, we made two graphs to visualize the relationship between GDP and Child Mortality. The first graph plots the average GDP per capita per year and the average child mortality rate per year over time. We have two different scales for the y axis as the numbers for the mortality rate and GDP are on different scales, and this enables to us to see the changes in both on the same graph. At a glance, the average GDP per Capita has increased over time while the child mortality rate has decreased over time. It seems that there an increase in GDP is correlated with a decrease in mortality rate.
-
-The second graph plots the average GDP per capita (over the years per country) against the average mortality rate (over the years per country). At a glance, it again looks like a higher mortality rate is correlated with a lower GDP per capita as the plotted points start at the top and curve downwards.
+We made two graphs to examine and visualize the relationship between GDP per Capita and Child Mortality Rate. We want to see how GDP per Capita (the explanatory variable) potentially affects the Child Mortality Rate (the response variable).
 
 ```{r}
 # | code-fold: true
@@ -149,29 +150,32 @@ year_avgs <- joined_df |>
 ```{r}
 # | code-fold: true
 joined_df |>
-  mutate(Decade = cut(Year, breaks = seq(1950, 2020, by = 10))) |>
+  mutate(Decade = floor(Year / 10) * 10) |>
   ggplot(aes(x = `GDP Per Capita`, y = `Mortality Rate`)) +
-  geom_point(alpha = 0.25) +
+  geom_point(alpha = 0.25, color = 'purple') +
   facet_wrap(~ Decade, scales = "free") +
-  labs(title = "Scatter Plot of GDP Per Capita vs Mortality Rate Over Time",
+  labs(title = "GDP Per Capita vs Child Mortality Rate Over Time",
        x = "GDP Per Capita",
        y = "Mortality Rate") +
   theme_minimal()
 ```
+The first graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a similar concave shape. While the overall shape of the relationship between the variables is similar across decades, it's notable that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
 
-#### Relationship between GDP and Child Mortality 
+
+#### Overall Relationship between GDP and Child Mortality 
 ```{r}
 # | code-fold: true
 year_avgs |>
   ggplot(aes(x = Avg_GDP_Per_Capita, y = Avg_Mortality_Rate)) +
-  geom_point(alpha = 0.5) +
+  geom_point(alpha = 0.5, color = 'blue') +
   theme_minimal() +
   labs(x = "Average GDP Per Capita", y = "Average Mortality Rate",
        title = "Average Mortality Rate vs Average GDP Per Capita by Country")
 ```
+The second graph plots the average GDP per capita (over the years per country) against the average mortality rate (over the years per country). At a glance, it looks like a higher mortality rate could be correlated with a lower GDP per capita as the plotted points start at the top (high mortality rate) and curve downwards (lower mortality rate) as we move to the right (GDP increases). However, the relationship is not exactly linear as there are various points across the mortality rate range that are similar in GDP values.
 
 ### Linear Regression
-Here, we create a linear model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP, according to linear regression. We get an estimated intercept of 128.411569954 and a slope of -0.002538529. So according to the model, when the GDP is 0, the mortality rate is around 128, and for each 1 unit increase in GDP, the mortality rate decreases by .0025. 
+Here, we create a linear regression model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP, according to linear regression.
 ```{r}
 # | code-fold: true
 mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
@@ -179,6 +183,7 @@ mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
 ```
 $$\hat{y} = 128 - 0.00254x$$
 Based on the results of our linear model, we find that child deaths when GDP is zero are 128.4. We round this to ~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit ($1000 USD) increase in GDP reduces child mortality by -0.0025 on average. This interpretation is not terribly straighforward, due to the different scales of the variables. 
+
 ### Model Fit
 
 ```{r}
@@ -190,7 +195,7 @@ variance_table <- data.frame(
                var(aug$.fitted), 
                var(aug$.resid))
 )
-print(variance_table)
+kable(variance_table, caption = "Variance Table") 
 ```
 Because we know the variance of the response values and the residuals, we can calculate R-squared using the formula $R^2 = 1 - \frac{{\text{var}( \hat{y})}}{{\text{var}(y)}}$, with $\hat{y}$ being the variance of the residuals and $y$ being the variance of the response values. Plugging these values into our formula, we get an $R^2$ value of approximately 0.3258. This means that our regression model explains approximately 32.58% of the variability of our response values. This indicates that our model may not be of the best quality because there is still a large portion of the variability in the response variable that is unexplained. 
 
