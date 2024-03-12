@@ -203,3 +203,52 @@ variance_table <- data.frame(
 print(variance_table)
 ```
 Because we know the variance of the response values and the residuals, we can calculate R-squared using the formula $R^2 = 1 - \frac{{\text{var}( \hat{y})}}{{\text{var}(y)}}$, with $\hat{y}$ being the variance of the residuals and $y$ being the variance of the response values. Plugging these values into our formula, we get an $R^2$ value of approximately 0.3258. This means that our regression model explains approximately 32.58% of the variability of our response values. This indicates that our model may not be of the best quality because there is still a large portion of the variability in the response variable that is unexplained. 
+
+## Simulation
+
+### Visualizing Simulations from the Model
+
+```{r}
+# 1. generate predictions using  predict() 
+predictions <- predict(mortalitygdp_lm, newdata = year_avgs)
+
+# 2. add random errors to the predictions w/ residual standard error (acquired with sigma())
+std_error <- sigma(mortalitygdp_lm)
+simulated_errors <- rnorm(n = length(predictions), mean = 0, sd = std_error)
+
+# 3. plotting doom
+
+simulated_year_avgs <- year_avgs|>
+    mutate(Simulated_Mortality = predictions + simulated_errors)
+
+
+# obs
+observed_plot <- ggplot(year_avgs, aes(x = Avg_GDP_Per_Capita, y = Avg_Mortality_Rate)) +
+  geom_point(aes(color = "Observed"), alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "blue", linetype = "dashed") +
+  theme_minimal() +
+  labs(title = "Observed Average Mortality Rate vs. Average GDP Per Capita",
+       color = "Data Type")
+
+
+# sim
+
+simulated_plot <- ggplot(simulated_year_avgs, aes(x = Avg_GDP_Per_Capita, y = Simulated_Mortality)) +
+  geom_point(aes(color = "Simulated"), alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "red", linetype = "dashed") +
+  theme_minimal() +
+  labs(title = "Simulated Average Mortality Rate vs. Average GDP Per Capita",
+       color = "Data Type")
+
+
+library(patchwork)
+
+(observed_plot | simulated_plot) + 
+  patchwork::plot_layout(guides = 'collect') & 
+  theme(legend.position = 'bottom')
+
+# need to fix labels, maybe add another mutate column
+  
+```
+
+### Generating Multiple Predictive Checks
