@@ -185,7 +185,7 @@ $$\hat{y} = 128 - 0.00254x$$
 Based on the results of our linear model, we find that child deaths when GDP is zero are 128.4. We round this to ~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit ($1000 USD) increase in GDP reduces child mortality by -0.0025 on average. This interpretation is not terribly straighforward, due to the different scales of the variables. 
 
 ### Model Fit
-
+To assess the regression model, we look at the variability in the response values that were accounted for by it. We look at the variance in the response values, the fitted values, and the residuals to determine the quality of our model.
 ```{r}
 # | code-fold: true
 aug <- broom::augment(mortalitygdp_lm)
@@ -197,7 +197,7 @@ variance_table <- data.frame(
 )
 kable(variance_table, caption = "Variance Table") 
 ```
-Because we know the variance of the response values and the residuals, we can calculate R-squared using the formula $R^2 = 1 - \frac{{\text{var}( \hat{y})}}{{\text{var}(y)}}$, with $\hat{y}$ being the variance of the residuals and $y$ being the variance of the response values. Plugging these values into our formula, we get an $R^2$ value of approximately 0.3258. This means that our regression model explains approximately 32.58% of the variability of our response values. This indicates that our model may not be of the best quality because there is still a large portion of the variability in the response variable that is unexplained. 
+From the variance of the response values and the residuals, we can calculate R-squared using the formula $R^2 = 1 - \frac{{\text{var}( \hat{y})}}{{\text{var}(y)}}$, with $\hat{y}$ being the variance of the residuals and $y$ being the variance of the response values. Plugging these values into our formula, we get an $R^2$ value of approximately 0.3258. This means that our regression model explains approximately 32.58% of the variability of our response values. This indicates that our model may not be of the best quality because there is still a large portion of the variability in the response variable that is unexplained. 
 
 ## Simulation
 
