@@ -146,10 +146,10 @@ year_avgs <- joined_df |>
 #### Relationship between GDP and Child Mortality Over Time
 ```{r}
 # | code-fold: true
-joined_df %>%
-  mutate(Decade = cut(Year, breaks = seq(1950, 2020, by = 10))) %>%
+joined_df |>
+  mutate(Decade = cut(Year, breaks = seq(1950, 2020, by = 10))) |>
   ggplot(aes(x = `GDP Per Capita`, y = `Mortality Rate`)) +
-  geom_point(alpha = 0.5) +
+  geom_point(alpha = 0.25) +
   facet_wrap(~ Decade, scales = "free") +
   labs(title = "Scatter Plot of GDP Per Capita vs Mortality Rate Over Time",
        x = "GDP Per Capita",
