@@ -348,6 +348,7 @@ sim_r_sq <- sims |>
   map(glance) |> 
   map_dbl(~ .x$r.squared)
 
+
 tibble(sims = sim_r_sq) |> 
   ggplot(aes(x = sims)) + 
   geom_histogram(binwidth = 0.025) +
@@ -358,6 +359,12 @@ tibble(sims = sim_r_sq) |>
 
 
 
+
+```
+
+```{r}
+
+tibble(sims = sim_r_sq)
 
 ```
 
