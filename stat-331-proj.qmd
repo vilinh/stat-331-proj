@@ -314,6 +314,8 @@ sim_r_sq <- sims |>
   map(glance) |> 
   map_dbl(~ .x$r.squared)
 
+sim_r_sq <- sim_r_sq[names(sim_r_sq) != "Avg_GDP_Per_Capita"]
+
 
 tibble(sims = sim_r_sq) |> 
   ggplot(aes(x = sims)) + 
