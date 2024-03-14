@@ -207,8 +207,7 @@ Here, we create a linear model where the response variable is the child mortalit
 
 Here, we create a linear regression model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP, according to linear regression.
 
-Our linear model is represented by the equation $$\hat{y} = 128 - 0.00254x$$ where $$\hat{y}$$ represents the predicted child mortality rate, $$x$$ represents represents the GDP per capita, $$B0$$ (intercept) indicates the child mortality rate when GDP per capita is zero, and $$B1$$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita.
-
+Our linear model is represented by the equation $$\hat{y} = 128 - 0.00254x$$ where $\hat{y}$ represents the predicted child mortality rate, $x$ represents represents the GDP per capita, $B0$ (intercept) indicates the child mortality rate when GDP per capita is zero, and $B1$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita. 
 ```{r}
 # | code-fold: true
 mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
@@ -217,7 +216,6 @@ mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
 tidy(mortalitygdp_lm)
 ```
 
-$$\hat{y} = 128 - 0.00254x$$
 
 ### Model Fit
 
