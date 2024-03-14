@@ -115,42 +115,25 @@ joined_df <- inner_join(child_mortality_long, GDP_per_Cap_long, join_by(country,
 
 ## Variable Description and Hypothesized Relationship
 
-
-
-We decided to limit our examination to the 1950s-2020 because some countries
-did not exist then, and therefore that took care of a lot of the NA values. The dataset also has years > 2020, but we wanted to look at how the past data points changed over time without the predicted values. We pivoted the data to be longer so it can be easily analyzed (on mortality rate and GDP per capita for each year).
-Then, we converted the values to be numeric as they represent quantitative data.
-For the GDP, we had to convert some values that had a "k" in it to the actual multiple
-of 1000. The final dataset has 195 different countries, spanning across 71 years.
+We decided to limit our examination to the 1950s-2020 because some countries did not exist then, and therefore that took care of a lot of the NA values. The dataset also has years \> 2020, but we wanted to look at how the past data points changed over time without the predicted values. We pivoted the data to be longer so it can be easily analyzed (on mortality rate and GDP per capita for each year). Then, we converted the values to be numeric as they represent quantitative data. For the GDP, we had to convert some values that had a "k" in it to the actual multiple of 1000. The final dataset has 195 different countries, spanning across 71 years.
 
 ### Variable Description
-The first variable in our joined data set is "country", which specifies the country that 
-the following data describes. The next variable is "Year", which specifies the year in 
-which the following data was collected. In our data, we limited our "Year" variable from 
-1950-present because many countries did not exist and therefore had missing data prior to 
-then. The "Mortality Rate" variable represents the number of deaths of children under 
-5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the 
-gross domestic product per person. The data for "GDP Per Capita" was also adjusted for 
-differences in purchasing power.
 
-differences in purchasing power. According to the International Monetary Fund, GDP is a monetary measure of the market value of all the final goods and services produced in a specific time period by a country or countries. [GDP](https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/gross-domestic-product-GDP) is  often used by the government of a single country to measure its economic health. 
+The first variable in our joined data set is "country", which specifies the country that the following data describes. The next variable is "Year", which specifies the year in which the following data was collected. In our data, we limited our "Year" variable from 1950-present because many countries did not exist and therefore had missing data prior to then. The "Mortality Rate" variable represents the number of deaths of children under 5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the gross domestic product per person. The data for "GDP Per Capita" was also adjusted for differences in purchasing power.
+
+differences in purchasing power. According to the International Monetary Fund, GDP is a monetary measure of the market value of all the final goods and services produced in a specific time period by a country or countries. [GDP](https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/gross-domestic-product-GDP) is often used by the government of a single country to measure its economic health.
 
 Our analysis revolves around four primary variables within the merged dataset:
 
 -   **Country**: This categorical variable identifies the nation to which the subsequent data points pertain. The inclusion of this variable allows for country-specific analyses, acknowledging the geopolitical diversity and its potential impact on health and economic indicators.
 
-
 -   **Year**: Ranging from 1950 to 2020, this numeric variable indicates the year of data collection. The decision to restrict our analysis to this period accounts for the emergence of new sovereign states and the availability of consistent data.
-
 
 ### Hypothesized Relationship
 
 -   **Mortality Rate (per 1,000 live births)**: Representing the probability of dying between birth and the age of five, this variable is an indicator of child health and overall societal well-being. It's derived from a combination of sources, including the United Nations Inter-agency Group for Child Mortality Estimation (UN IGME) and the World Population Prospects.
 
 -   **GDP Per Capita (PPP-adjusted)**: This economic metric reflects the gross domestic product divided by midyear population, adjusted for purchasing power parity. It serves as a measure of a country's economic performance and living standards, which allows for comparison across different cost-of-living and inflation scenarios. GDP per capita is instrumental in assessing the economic capacity and resource availability that can influence public health infrastructure, access to healthcare, and overall quality of life.
-
-
-### **Hypothesized Relationship**
 
 Our hypothesis predicts a negative correlation between GDP per capita and child mortality rates, based on the ssumption that higher economic status, as indicated by GDP per capita, is associated with enhanced access to healthcare, improved living conditions, and higher investment in public health infrastructure. These conditions are expected to contribute to lower child mortality rates, reflecting better health outcomes in economically prosperous countries.
 
@@ -161,8 +144,6 @@ Our analysis seeks to quantify these relationships, offering insights into the d
 ## Linear Regression
 
 In our study, we employ linear regression to examine the potential impact of GDP per capita on child mortality rates. Linear regression is an appropriate statistical method for this analysis as it allows us to model the relationship between a continuous response variable and one or more explanatory variables. We hypothesize that GDP per capita (explanatory variable, x) inversely affects the child mortality rate (response variable, y\^​), with the expectation that higher GDP per capita is associated with lower child mortality rates. in order to esatblish whether linear regression was appropriate, we revisited our LINE assumptions:
-
-
 
 We made two graphs to examine and visualize the relationship between GDP per Capita and Child Mortality Rate. We want to see how GDP per Capita (the explanatory variable) potentially affects the Child Mortality Rate (the response variable).
 
@@ -178,7 +159,6 @@ We made two graphs to examine and visualize the relationship between GDP per Cap
 
 As a preliminary check, we created two scatterplots to visually assess the relationship between GDP per capita and the Child Mortality Rate over time. Our aim was to discern the form, direction, strength, and presence of any unusual observations in the relationship between these two variables.\
 
-
 ```{r}
 # | code-fold: true
 year_avgs <- joined_df |>
@@ -188,7 +168,6 @@ year_avgs <- joined_df |>
     Avg_GDP_Per_Capita = mean(`GDP Per Capita`, na.rm = TRUE)
   )
 ```
-
 
 #### Overall Relationship between GDP and Child Mortality
 
@@ -203,7 +182,6 @@ year_avgs |>
 ```
 
 The scatterplot of average GDP per capita against average mortality rate shows a general downward trend, suggesting a negative correlation where higher GDP per capita is associated with lower child mortality rates. The relationship exhibits a non-linear form, with the strength of the relationship varying across the range of GDP values. Notably, some countries with similar GDP per capita exhibit a wide range of mortality rates, indicating other factors may influence mortality beyond GDP alone.
-
 
 #### Relationship between GDP and Child Mortality Over Time
 
@@ -222,19 +200,15 @@ joined_df |>
 
 The first graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a similar concave shape. While the overall shape of the relationship between the variables is similar across decades, it's notable that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
 
-
-
 The second graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a similar concave shape. While the overall shape of the relationship between the variables is similar across decades, it's evident that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
 
 ### Linear Regression
-
 
 Here, we create a linear model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP.
 
 Here, we create a linear regression model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP, according to linear regression.
 
 Our linear model is represented by the equation $$\hat{y} = 128 - 0.00254x$$ where $$\hat{y}$$ represents the predicted child mortality rate, $$x$$ represents represents the GDP per capita, $$B0$$ (intercept) indicates the child mortality rate when GDP per capita is zero, and $$B1$$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita.
-
 
 ```{r}
 # | code-fold: true
@@ -248,14 +222,9 @@ $$\hat{y} = 128 - 0.00254x$$
 
 ### Model Fit
 
-Based on the results of our linear model, we find that child deaths when GDP is zero are 128.4. We round this to ~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit ($1000 USD) increase in GDP reduces child mortality by -0.0025 on average. This interpretation is not terribly straighforward, due to the different scales of the variables. 
-
-=======
-
-$$\hat{y} = 128 - 0.00254x$$ This equation suggests that the child mortality rate when GDP is zero is 128.4. We also find that, holding other factors constant, a one-unit (\$1000 USD) increase in GDP corresponds to the child mortality rate decreasing -0.0025 on average. It's important to note that the interpretation of the slope coefficient involves units from both variables, confirming the validity of using different scales in our analysis.
+Based on the results of our linear model, we find that child deaths when GDP is zero are 128.4. We round this to \~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit (\$1000 USD) increase in GDP corresponds to the child mortality rate decreasing -0.0025 on average. It's important to note that the interpretation of the slope coefficient involves units from both variables, confirming the validity of using different scales in our analysis.
 
 ### Model Fit
-
 
 ```{r}
 # | code-fold: true
@@ -361,6 +330,7 @@ tibble(sims = sim_r_sq) |>
 
 
 ```
+<<<<<<< HEAD
 
 ```{r}
 
@@ -370,3 +340,5 @@ tibble(sims = sim_r_sq)
 
 
 
+=======
+>>>>>>> 706ba0593e7009c0500ef2f41da4b026f1cce48a
