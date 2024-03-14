@@ -29,7 +29,6 @@ library(here)
 library(broom)
 library(purrr)
 library(knitr)
-
 child_mortality <- read_csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
 GDP_per_Cap <- read_csv("gdp_pcap.csv")
 ```
