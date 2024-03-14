@@ -168,8 +168,7 @@ year_avgs <- joined_df |>
   )
 ```
 
-#### Overall Relationship between GDP and Child Mortality
-
+### Visualizations
 ```{r}
 # | code-fold: true
 year_avgs |>
@@ -180,9 +179,8 @@ year_avgs |>
        title = "Average Mortality Rate vs Average GDP Per Capita by Country")
 ```
 
-The scatterplot of average GDP per capita against average mortality rate shows a general downward trend, suggesting a negative correlation where higher GDP per capita is associated with lower child mortality rates. The relationship exhibits a non-linear form, with the strength of the relationship varying across the range of GDP values. Notably, some countries with similar GDP per capita exhibit a wide range of mortality rates, indicating other factors may influence mortality beyond GDP alone.
+The scatterplot of average GDP per capita against average mortality rate shows a general downward trend, suggesting a negative correlation where higher GDP per capita is associated with lower child mortality rates. The relationship does exhibit a non-linear form, with the strength of the relationship varying across the range of GDP values. Notably, some countries with similar GDP per capita exhibit a wide range of mortality rates, indicating other factors may influence mortality beyond GDP alone.
 
-#### Relationship between GDP and Child Mortality Over Time
 
 ```{r}
 # | code-fold: true
@@ -197,11 +195,9 @@ joined_df |>
   theme_minimal()
 ```
 
-The first graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a similar concave shape. While the overall shape of the relationship between the variables is similar across decades, it's notable that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
-
 The second graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a similar concave shape. While the overall shape of the relationship between the variables is similar across decades, it's evident that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
 
-### Linear Regression
+### Regression and Model Fit
 
 
 
@@ -218,8 +214,6 @@ Based on the results of our linear regression, we use the equation $$\hat{y} = 1
 We find that child deaths when GDP is zero are 128.4, and round this to \~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit (\$1000 USD) increase in GDP corresponds to the child mortality rate decreasing -0.0025 on average. It's important to note that the interpretation of the slope coefficient involves units from both variables, confirming the validity of using different scales in our analysis.
 
 
-
-### Model Fit
 
 ```{r}
 # | code-fold: true
