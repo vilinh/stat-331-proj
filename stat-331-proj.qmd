@@ -193,7 +193,9 @@ The second graph plots the GDP per capita per against the child mortality rate a
 mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
   data = year_avgs)
 
-tidy(mortalitygdp_lm)
+mortality_regression <- tidy(mortalitygdp_lm)
+
+kable(mortality_regression, caption = "GDP Per Capita Regression Model")
 ```
 
 Based on the results of our linear regression, we use the equation $$\hat{y} = 128 - 0.00254x$$ to represent the relationship between GDP and child mortality. In this model,  $\hat{y}$ represents the predicted child mortality rate, $x$ represents represents the GDP per capita, $B0$ (intercept) indicates the child mortality rate when GDP per capita is zero, and $B1$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita. 
