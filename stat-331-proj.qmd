@@ -217,7 +217,6 @@ mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
 tidy(mortalitygdp_lm)
 ```
 
-$$\hat{y} = 128 - 0.00254x$$
 
 ### Model Fit
 
