@@ -24,16 +24,11 @@ number-sections: true
 
 ```{r}
 # | code-fold: true
-library(kableExtra)
 library(tidyverse)
 library(here)
 library(broom)
 library(purrr)
 library(knitr)
-<<<<<<< HEAD
-=======
-
->>>>>>> a01751c984a85e9ea2ba23078b3c7af014d571dd
 child_mortality <- read_csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
 GDP_per_Cap <- read_csv("gdp_pcap.csv")
 ```
