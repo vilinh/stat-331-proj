@@ -330,7 +330,7 @@ tibble(sims = sim_r_sq) |>
 
 
 ```
-<<<<<<< HEAD
+
 
 ```{r}
 
@@ -340,5 +340,3 @@ tibble(sims = sim_r_sq)
 
 
 
-=======
->>>>>>> 706ba0593e7009c0500ef2f41da4b026f1cce48a
