@@ -1,6 +1,6 @@
 ---
-title: "Final Project"
-subtitle: "Project Proposal"
+title: "Investigation into the Relationship between GDP and Child Mortality Rates over Time"
+subtitle: "STAT 331 Final Project"
 author: "Alex Sullivan, Megan Kerner, Isabelle Phraner, Vi-Linh Vu"
 format: 
   html:
