@@ -254,11 +254,11 @@ library(patchwork)
 
 ### Generating Multiple Predictive Checks
 ```{r}
-mult_pred <- function(sd){
-set.seed(42)
-data <- data.frame(
-    gdp = rnorm(13845, mean = 0, sd = sd),
-    mortality = rnorm(13845, mean = 0, sd = sd)
+mult_pred <- function(sd) {
+  set.seed(42)
+  data <- data.frame(
+    "GDP Per Capita" = rnorm(13845, mean = 0, sd = sd),
+   "Mortality Rate" = rnorm(13845, mean = 0, sd = sd)
   )
   return(data)
 }
@@ -270,19 +270,29 @@ data <- data.frame(
 
 ```{r}
 perform_regression <- function(observed_data, simulated_datasets) {
- 
   data <- na.omit(data.frame(observed_data, simulated_datasets))
-  lm_model <- lm(observed_data ~ simulated_datasets, data = data)
+  lm_model <- lm(`Mortality Rate` ~ `GDP Per Capita`, data = data)
   
   # Extract coefficients
-  summary(lm_model)$r.squared
+  return(summary(lm_model)$r.squared)
 }
 ```
 
 ```{r}
-observed_data <- joined_df |> select("Mortality Rate", "GDP Per Capita")
+observed_data <- joined_df %>%
+  select("Mortality Rate", "GDP Per Capita")
 simulated_datasets <- map(1:1000, ~ mult_pred(sd = std_error))
-rsquared_list <- map_dbl(simulated_datasets, ~ perform_regression(observed_data, .x))
+combined_simulated_data <- bind_rows(simulated_datasets)
+
+rsquared_values <- map_dbl(simulated_datasets, ~ perform_regression(observed_data, .x))
+```
+```{r}
+str(observed_data)
+str(combined_simulated_data)
+colnames(joined_df)
+```
+
+
 
 
 
