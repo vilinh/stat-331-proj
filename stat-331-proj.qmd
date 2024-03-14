@@ -1,6 +1,7 @@
 ---
 title: "Final Project"
 subtitle: "Project Proposal"
+author: "Alex Sullivan, Megan Kerner, Isabelle Phraner, Vi-Linh Vu"
 format: 
   html:
     embed-resources: true
@@ -26,12 +27,8 @@ number-sections: true
 library(tidyverse)
 library(here)
 library(broom)
-<<<<<<< HEAD
 library(purrr)
-=======
 library(knitr)
-
->>>>>>> caa881b706b842869afeb54db57aaab53252c622
 child_mortality <- read_csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
 GDP_per_Cap <- read_csv("gdp_pcap.csv")
 ```
@@ -119,15 +116,13 @@ a combination of GDP per capita data from the World Bank, the Maddison Project D
 and the Penn World Table. We took these two data sets and joined them to create one data 
 set that displays child mortality rate, GDP per capita, year, and country.
 
-<<<<<<< HEAD
-=======
+
 We decided to limit our examination to the 1950s-2020 because some countries
 did not exist then, and therefore that took care of a lot of the NA values. The dataset also has years > 2020, but we wanted to look at how the past data points changed over time without the predicted values. We pivoted the data to be longer so it can be easily analyzed (on mortality rate and GDP per capita for each year).
 Then, we converted the values to be numeric as they represent quantitative data.
 For the GDP, we had to convert some values that had a "k" in it to the actual multiple
 of 1000. The final dataset has 195 different countries, spanning across 71 years.
 
->>>>>>> caa881b706b842869afeb54db57aaab53252c622
 ### Variable Description
 The first variable in our joined data set is "country", which specifies the country that 
 the following data describes. The next variable is "Year", which specifies the year in 
@@ -138,11 +133,9 @@ then. The "Mortality Rate" variable represents the number of deaths of children 
 gross domestic product per person. The data for "GDP Per Capita" was also adjusted for 
 <<<<<<< HEAD
 differences in purchasing power.
-=======
+
 differences in purchasing power. According to the International Monetary Fund, GDP is a monetary measure of the market value of all the final goods and services produced in a specific time period by a country or countries. [GDP](https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/gross-domestic-product-GDP) is  often used by the government of a single country to measure its economic health. 
 
-
->>>>>>> caa881b706b842869afeb54db57aaab53252c622
 
 ### Hypothesized Relationship
 
@@ -155,11 +148,9 @@ Additionally we are expecting to see a dramatic decrease in child mortality over
 
 ### Data Visualization
 
-<<<<<<< HEAD
-=======
+
 We made two graphs to examine and visualize the relationship between GDP per Capita and Child Mortality Rate. We want to see how GDP per Capita (the explanatory variable) potentially affects the Child Mortality Rate (the response variable).
 
->>>>>>> caa881b706b842869afeb54db57aaab53252c622
 ```{r}
 # | code-fold: true
 year_avgs <- joined_df |>
@@ -170,8 +161,7 @@ year_avgs <- joined_df |>
   )
 ```
 
-<<<<<<< HEAD
-=======
+
 #### Relationship between GDP and Child Mortality Over Time
 ```{r}
 # | code-fold: true
@@ -186,7 +176,7 @@ joined_df |>
   theme_minimal()
 ```
 The first graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a similar concave shape. While the overall shape of the relationship between the variables is similar across decades, it's notable that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
->>>>>>> caa881b706b842869afeb54db57aaab53252c622
+
 
 
 #### Overall Relationship between GDP and Child Mortality 
@@ -225,11 +215,11 @@ joined_df |>
 ```
 
 ### Linear Regression
-<<<<<<< HEAD
+
 Here, we create a linear model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP.
-=======
+
 Here, we create a linear regression model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP, according to linear regression.
->>>>>>> caa881b706b842869afeb54db57aaab53252c622
+
 ```{r}
 # | code-fold: true
 mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
@@ -238,12 +228,11 @@ mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
 tidy(mortalitygdp_lm)
 ```
 $$\hat{y} = 128 - 0.00254x$$
-<<<<<<< HEAD
 
 ### Model Fit
-=======
+
 Based on the results of our linear model, we find that child deaths when GDP is zero are 128.4. We round this to ~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit ($1000 USD) increase in GDP reduces child mortality by -0.0025 on average. This interpretation is not terribly straighforward, due to the different scales of the variables. 
->>>>>>> caa881b706b842869afeb54db57aaab53252c622
+
 
 ### Model Fit
 To assess the regression model, we look at the variability in the response values that were accounted for by it. We look at the variance in the response values, the fitted values, and the residuals to determine the quality of our model.
@@ -308,46 +297,41 @@ library(patchwork)
 ```
 
 ### Generating Multiple Predictive Checks
+
 ```{r}
-mult_pred <- function(sd) {
-  set.seed(42)
-  data <- data.frame(
-    "GDP Per Capita" = rnorm(13845, mean = 0, sd = sd),
-   "Mortality Rate" = rnorm(13845, mean = 0, sd = sd)
-  )
-  return(data)
+
+sd <- sigma(mortalitygdp_lm)
+noise <- function(x, mean = 0, sd){
+  x + rnorm(length(x), 
+            mean, 
+            sd)
 }
+nsims <- 1000
+sims <- map_dfc(.x = 1:nsims,
+                .f = ~ tibble(sim = noise(predictions, 
+                                          sd = sd)
+                              ))
+colnames(sims) <- colnames(sims) |> 
+  str_replace(pattern = "\\.\\.\\.",
+                  replace = "_")
 
+sims <- year_avgs |> 
+  filter(!is.na(`Avg_Mortality_Rate`)) |> 
+  select(`Avg_GDP_Per_Capita`)|> 
+  bind_cols(sims)
 
+sim_r_sq <- sims |> 
+  map(~ lm(Avg_GDP_Per_Capita ~ .x, data = sims)) |> 
+  map(glance) |> 
+  map_dbl(~ .x$r.squared)
 
-
-```
-
-```{r}
-perform_regression <- function(observed_data, simulated_datasets) {
-  data <- na.omit(data.frame(observed_data, simulated_datasets))
-  lm_model <- lm(`Mortality Rate` ~ `GDP Per Capita`, data = data)
-  
-  # Extract coefficients
-  return(summary(lm_model)$r.squared)
-}
-```
-
-```{r}
-observed_data <- joined_df %>%
-  select("Mortality Rate", "GDP Per Capita")
-simulated_datasets <- map(1:1000, ~ mult_pred(sd = std_error))
-combined_simulated_data <- bind_rows(simulated_datasets)
-
-rsquared_values <- map_dbl(simulated_datasets, ~ perform_regression(observed_data, .x))
-```
-```{r}
-str(observed_data)
-str(combined_simulated_data)
-colnames(joined_df)
-```
-
-
+tibble(sims = sim_r_sq) |> 
+  ggplot(aes(x = sims)) + 
+  geom_histogram(binwidth = 0.025) +
+  labs(x = expression("Simulated"~ R^2),
+       y = "",
+       subtitle = "Number of Simulated Models") +
+  theme_bw()
 
 
 
