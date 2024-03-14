@@ -204,11 +204,8 @@ The second graph plots the GDP per capita per against the child mortality rate a
 
 ### Linear Regression
 
-Here, we create a linear model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP.
 
-Here, we create a linear regression model where the response variable is the child mortality rate and the explanatory variable is the GDP per capita. We want to see how child mortality is affected by changes in GDP, according to linear regression.
 
-Our linear model is represented by the equation $$\hat{y} = 128 - 0.00254x$$ where $\hat{y}$ represents the predicted child mortality rate, $x$ represents represents the GDP per capita, $B0$ (intercept) indicates the child mortality rate when GDP per capita is zero, and $B1$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita. 
 ```{r}
 # | code-fold: true
 mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
@@ -217,10 +214,11 @@ mortalitygdp_lm <- lm(Avg_Mortality_Rate ~ Avg_GDP_Per_Capita,
 tidy(mortalitygdp_lm)
 ```
 
+Based on the results of our linear regression, we use the equation $$\hat{y} = 128 - 0.00254x$$ to represent the relationship between GDP and child mortality. In this model,  $\hat{y}$ represents the predicted child mortality rate, $x$ represents represents the GDP per capita, $B0$ (intercept) indicates the child mortality rate when GDP per capita is zero, and $B1$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita. 
 
-### Model Fit
+We find that child deaths when GDP is zero are 128.4, and round this to \~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit (\$1000 USD) increase in GDP corresponds to the child mortality rate decreasing -0.0025 on average. It's important to note that the interpretation of the slope coefficient involves units from both variables, confirming the validity of using different scales in our analysis.
 
-Based on the results of our linear model, we find that child deaths when GDP is zero are 128.4. We round this to \~128 deaths, as there cannot be fractions of a death. Because is it highly unlikely for the true GDP to ever be zero, this intercept is somewhat irrelevant. We also find that, holding other factors constant, a one-unit (\$1000 USD) increase in GDP corresponds to the child mortality rate decreasing -0.0025 on average. It's important to note that the interpretation of the slope coefficient involves units from both variables, confirming the validity of using different scales in our analysis.
+
 
 ### Model Fit
 
