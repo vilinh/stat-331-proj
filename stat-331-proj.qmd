@@ -60,10 +60,7 @@ child_mortality <- child_mortality |>
 # Refine GDP_per_Capita dataset
 GDP_per_Cap <- GDP_per_Cap |>
   select(country, `1950`:`2020`)
-```
 
-```{r}
-# | code-fold: true
 child_mortality_long <- child_mortality |>
   pivot_longer(
     cols = !country,
@@ -78,10 +75,6 @@ GDP_per_Cap_long <- GDP_per_Cap |>
     values_to = "GDP Per Capita"
   )
 
-```
-
-```{r}
-# | code-fold: true
 # function converts numbers in "XXk" format to numeric
 # eg "89k" -> 89,000
 convert_k_to_number <- function(x) {
@@ -92,10 +85,7 @@ convert_k_to_number <- function(x) {
   }
   return(numeric_value)
 }
-```
 
-```{r}
-# | code-fold: true
 # converts mortality rate to numeric
 child_mortality_long <- child_mortality_long |>
   filter(!is.na(child_mortality_long$`Mortality Rate`)) |>
@@ -104,10 +94,7 @@ child_mortality_long <- child_mortality_long |>
 # converts gdp to numeric
 GDP_per_Cap_long <- GDP_per_Cap_long |>
   mutate(`GDP Per Capita` = sapply(`GDP Per Capita`, convert_k_to_number))
-```
 
-```{r}
-# | code-fold: true
 joined_df <- inner_join(child_mortality_long, GDP_per_Cap_long, join_by(country, Year)) |>
   mutate(Year = as.numeric(Year))
 ```
