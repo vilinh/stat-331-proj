@@ -332,11 +332,7 @@ tibble(sims = sim_r_sq) |>
 ```
 
 
-```{r}
-
-tibble(sims = sim_r_sq)
-
-```
+The graph represents the distribution of R squared for all linear regression with all of the simulated data sets. The graph is roughly normal but slightly skewed to the left. The distribution is centered around 0.35 and implies that the model generates data that encompasses about 35% of the variability in Average GDP per capita.  
 
 
 
