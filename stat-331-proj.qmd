@@ -233,7 +233,10 @@ library(patchwork)
 # need to fix labels, maybe add another mutate column
   
 ```
-
+The code above generates two side-by-side plots. On the left side, we have the observed average mortality rates plotted against average GDP per capita, while on the right side, we see the simulated average mortality rates plotted against average GDP per capita. Upon comparison, it's evident that the simulated mortality rates exhibit greater variability compared to the observed values due to a larger spread of data points around the regression line in the simulated plot. Furthermore, when examining the relationship between mortality rates and GDP per capita, similarities can be observed for lower values of average GDP per capita in both plots. However, as average GDP per capita increases, a notable difference emerges between the observed and simulated mortality rates, as the observed mortality rates appear to be higher than the simulated rates.
+This discrepancy suggests that our prediction model may not fully capture the complexities of the relationship between mortality rates and GDP per capita, especially at higher levels of average GDP per capita.
+  
+  
 ### Generating Multiple Predictive Checks
 
 ```{r}
@@ -280,4 +283,5 @@ tibble(sims = sim_r_sq) |>
 
 ```
 
-The graph represents the distribution of R squared for all linear regression with all of the simulated data sets. The graph is roughly normal but slightly skewed to the left. The distribution is centered around 0.35 and implies that the model generates data that encompasses about 35% of the variability in Average GDP per capita.
+The graph represents the distribution of R squared for all linear regression with all of the simulated data sets. With a roughly normal distribution skewed slightly to the left, it suggests that while many models demonstrate moderate explanatory power, there's notable variability in their effectiveness in capturing the relationship between average GDP per capita and average mortality rate. The distribution being centered around 0.35 indicates that, on average, the models explain approximately 35% of the variability in average GDP per capita. This implies that while the model captures a significant portion of the variation, there's still substantial unexplained variability. Therefore, while the model provides valuable insights into the relationship between the variables, there's room for improvement to increase its predictive accuracy.
+
