@@ -232,61 +232,8 @@ library(patchwork)
   patchwork::plot_layout(guides = 'collect') & 
   theme(legend.position = 'bottom')
 
-# need to fix labels, maybe add another mutate column
-  
-```
-
-```{r}
-library(ggplot2)
-library(patchwork)
-library(dplyr)
-
-# Assuming mortalitygdp_lm and year_avgs are already defined and correct
-
-# 1. Generate predictions using predict()
-predictions <- predict(mortalitygdp_lm, newdata = year_avgs)
-
-# 2. Add random errors to the predictions w/ residual standard error (acquired with sigma())
-std_error <- sigma(mortalitygdp_lm)
-simulated_errors <- rnorm(n = length(predictions), mean = 0, sd = std_error)
-
-# 3. Prepare for visualization with proper labeling
-simulated_year_avgs <- year_avgs %>%
-    mutate(Simulated_Mortality = predictions + simulated_errors) %>%
-    rename(Average_GDP_Per_Capita = Avg_GDP_Per_Capita,
-           Average_Mortality_Rate = Avg_Mortality_Rate)
-
-# Plot for observed data with confidence bands
-observed_plot <- ggplot(simulated_year_avgs, aes(x = Average_GDP_Per_Capita, y = Average_Mortality_Rate)) +
-  geom_point(aes(color = "Observed"), alpha = 0.6) +
-  geom_smooth(method = "lm", se = TRUE, color = "blue") +
-  theme_minimal() +
-  labs(title = "Observed Average Mortality Rate vs Average GDP Per Capita",
-       color = "Data Type",
-       x = "Average GDP Per Capita",
-       y = "Average Mortality Rate")
-
-# Plot for simulated data with confidence bands
-simulated_plot <- ggplot(simulated_year_avgs, aes(x = Average_GDP_Per_Capita, y = Simulated_Mortality)) +
-  geom_point(aes(color = "Simulated"), alpha = 0.6) +
-  geom_smooth(method = "lm", se = TRUE, color = "red") +
-  theme_minimal() +
-  labs(title = "Simulated Average Mortality Rate vs Average GDP Per Capita",
-       color = "Data Type",
-       x = "Average GDP Per Capita",
-       y = "Simulated Mortality Rate")
-
-# Combine plots side by side with shared legend
-combined_plot <- (observed_plot | simulated_plot) + 
-  plot_layout(guides = 'collect') & 
-  theme(legend.position = 'bottom')
-
-# Print the combined plot
-print(combined_plot)
 
 ```
-
-The code above generates two side-by-side plots. On the left side, we have the observed average mortality rates plotted against average GDP per capita, while on the right side, we see the simulated average mortality rates plotted against average GDP per capita. Upon comparison, it's evident that the simulated mortality rates exhibit greater variability compared to the observed values due to a larger spread of data points around the regression line in the simulated plot. Furthermore, when examining the relationship between mortality rates and GDP per capita, similarities can be observed for lower values of average GDP per capita in both plots. However, as average GDP per capita increases, a notable difference emerges between the observed and simulated mortality rates, as the observed mortality rates appear to be higher than the simulated rates. This discrepancy suggests that our prediction model may not fully capture the complexities of the relationship between mortality rates and GDP per capita, especially at higher levels of average GDP per capita.
 
 ### Generating Multiple Predictive Checks
 
