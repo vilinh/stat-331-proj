@@ -29,6 +29,7 @@ library(here)
 library(broom)
 library(purrr)
 library(knitr)
+library(gganimate)
 child_mortality <- read_csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
 GDP_per_Cap <- read_csv("gdp_pcap.csv")
 ```
@@ -148,6 +149,16 @@ joined_df |>
        x = "GDP Per Capita",
        y = "Mortality Rate") +
   theme_minimal()
+```
+
+```{r}
+joined_df |>
+  mutate(Decade = floor(Year / 10) * 10) |>
+  ggplot(aes(x = `GDP Per Capita`, y = `Mortality Rate`)) +
+  geom_point(alpha = 0.25, color = 'purple') +
+ labs(title = 'Year: {frame_time}', x = 'GDP Per Capita', y = 'Mortality Rate') +
+  transition_time(Year) +
+  ease_aes('linear')
 ```
 
 The second graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a similar concave shape. While the overall shape of the relationship between the variables is similar across decades, it's evident that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
