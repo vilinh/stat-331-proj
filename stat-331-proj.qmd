@@ -208,9 +208,9 @@ simulated_year_avgs <- year_avgs|>
 # obs
 observed_plot <- ggplot(year_avgs, aes(x = Avg_GDP_Per_Capita, y = Avg_Mortality_Rate)) +
   geom_point(aes(color = "Observed"), alpha = 0.6) +
-  geom_smooth(method = "lm", se = FALSE, color = "blue", linetype = "dashed") +
+  geom_smooth(method = "lm", se = TRUE, color = "blue", linetype = "dashed") +
   theme_minimal() +
-  labs(title = "Observed Average Mortality Rate vs. Average GDP Per Capita",
+  labs(title = "Observed Average Mortality Rate vs. Average GDP Per Capita",subtitle = "Average Mortality Rate", x= "Average GDP Per Capita", y = "",
        color = "Data Type")
 
 
@@ -218,9 +218,9 @@ observed_plot <- ggplot(year_avgs, aes(x = Avg_GDP_Per_Capita, y = Avg_Mortality
 
 simulated_plot <- ggplot(simulated_year_avgs, aes(x = Avg_GDP_Per_Capita, y = Simulated_Mortality)) +
   geom_point(aes(color = "Simulated"), alpha = 0.6) +
-  geom_smooth(method = "lm", se = FALSE, color = "red", linetype = "dashed") +
+  geom_smooth(method = "lm", se = TRUE, color = "red", linetype = "dashed") +
   theme_minimal() +
-  labs(title = "Simulated Average Mortality Rate vs. Average GDP Per Capita",
+  labs(title = "Simulated Average Mortality Rate vs. Average GDP Per Capita", subtitle = "Simulated Mortality Rate", x= "Average GDP Per Capita", y = "",
        color = "Data Type")
 
 
@@ -233,10 +233,59 @@ library(patchwork)
 # need to fix labels, maybe add another mutate column
   
 ```
-The code above generates two side-by-side plots. On the left side, we have the observed average mortality rates plotted against average GDP per capita, while on the right side, we see the simulated average mortality rates plotted against average GDP per capita. Upon comparison, it's evident that the simulated mortality rates exhibit greater variability compared to the observed values due to a larger spread of data points around the regression line in the simulated plot. Furthermore, when examining the relationship between mortality rates and GDP per capita, similarities can be observed for lower values of average GDP per capita in both plots. However, as average GDP per capita increases, a notable difference emerges between the observed and simulated mortality rates, as the observed mortality rates appear to be higher than the simulated rates.
-This discrepancy suggests that our prediction model may not fully capture the complexities of the relationship between mortality rates and GDP per capita, especially at higher levels of average GDP per capita.
-  
-  
+
+```{r}
+library(ggplot2)
+library(patchwork)
+library(dplyr)
+
+# Assuming mortalitygdp_lm and year_avgs are already defined and correct
+
+# 1. Generate predictions using predict()
+predictions <- predict(mortalitygdp_lm, newdata = year_avgs)
+
+# 2. Add random errors to the predictions w/ residual standard error (acquired with sigma())
+std_error <- sigma(mortalitygdp_lm)
+simulated_errors <- rnorm(n = length(predictions), mean = 0, sd = std_error)
+
+# 3. Prepare for visualization with proper labeling
+simulated_year_avgs <- year_avgs %>%
+    mutate(Simulated_Mortality = predictions + simulated_errors) %>%
+    rename(Average_GDP_Per_Capita = Avg_GDP_Per_Capita,
+           Average_Mortality_Rate = Avg_Mortality_Rate)
+
+# Plot for observed data with confidence bands
+observed_plot <- ggplot(simulated_year_avgs, aes(x = Average_GDP_Per_Capita, y = Average_Mortality_Rate)) +
+  geom_point(aes(color = "Observed"), alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  theme_minimal() +
+  labs(title = "Observed Average Mortality Rate vs Average GDP Per Capita",
+       color = "Data Type",
+       x = "Average GDP Per Capita",
+       y = "Average Mortality Rate")
+
+# Plot for simulated data with confidence bands
+simulated_plot <- ggplot(simulated_year_avgs, aes(x = Average_GDP_Per_Capita, y = Simulated_Mortality)) +
+  geom_point(aes(color = "Simulated"), alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  theme_minimal() +
+  labs(title = "Simulated Average Mortality Rate vs Average GDP Per Capita",
+       color = "Data Type",
+       x = "Average GDP Per Capita",
+       y = "Simulated Mortality Rate")
+
+# Combine plots side by side with shared legend
+combined_plot <- (observed_plot | simulated_plot) + 
+  plot_layout(guides = 'collect') & 
+  theme(legend.position = 'bottom')
+
+# Print the combined plot
+print(combined_plot)
+
+```
+
+The code above generates two side-by-side plots. On the left side, we have the observed average mortality rates plotted against average GDP per capita, while on the right side, we see the simulated average mortality rates plotted against average GDP per capita. Upon comparison, it's evident that the simulated mortality rates exhibit greater variability compared to the observed values due to a larger spread of data points around the regression line in the simulated plot. Furthermore, when examining the relationship between mortality rates and GDP per capita, similarities can be observed for lower values of average GDP per capita in both plots. However, as average GDP per capita increases, a notable difference emerges between the observed and simulated mortality rates, as the observed mortality rates appear to be higher than the simulated rates. This discrepancy suggests that our prediction model may not fully capture the complexities of the relationship between mortality rates and GDP per capita, especially at higher levels of average GDP per capita.
+
 ### Generating Multiple Predictive Checks
 
 ```{r}
@@ -286,4 +335,3 @@ tibble(sims = sim_r_sq) |>
 ```
 
 The graph represents the distribution of R squared for all linear regression with all of the simulated data sets. With a roughly normal distribution skewed slightly to the left, it suggests that while many models demonstrate moderate explanatory power, there's notable variability in their effectiveness in capturing the relationship between average GDP per capita and average mortality rate. The distribution being centered around 0.1 indicates that, on average, the models explain approximately 10% of the variability in average GDP per capita. This implies that while the model captures a portion of the variation, there's still substantial unexplained variability. Therefore, while the model provides insights into the relationship between the variables, there's room for improvement to increase its predictive accuracy.
-
