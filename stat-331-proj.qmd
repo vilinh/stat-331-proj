@@ -191,6 +191,8 @@ The variance table derived from our model's residuals allows us to calculate the
 
 ### Visualizing Simulations from the Model
 
+In our analysis, we assessed the robustness of our linear regression model by generating simulated data, incorporating the variability estimated from the model\'s residuals. This simulation allows us to envision how the model might perform under different scenarios that align with the observed variance. If the observed and simulated data closely resemble each other, it reinforces the model\'s adequacy in capturing the essence of the relationship between GDP and mortality rates. However, the side-by-side plots reveal the observed data's tighter clustering at lower GDP values, diverging at higher values, whereas the simulated data display a more uniform dispersion. This discrepancy suggests the presence of non-linearities or varying error terms across the GDP spectrum that the linear model does not account for, indicating that alternative models may provide a more nuanced understanding of the data.
+
 ```{r}
 # 1. generate predictions using  predict() 
 predictions <- predict(mortalitygdp_lm, newdata = year_avgs)
