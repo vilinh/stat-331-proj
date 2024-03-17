@@ -36,7 +36,7 @@ GDP_per_Cap <- read_csv("gdp_pcap.csv")
 
 ## Data Description and Cleaning Process
 
-Our analysis explores the relationship between child mortality and GDP per capita across various countries over time. We utilize two primary datasets:
+In this analysis, we will be exploring the relationship between child mortality rate and GDP per capita across various countries over time. We utilize two primary datasets:
 
 1.  **Child Mortality Dataset**: Combines data from multiple sources including Gapminder (v7) for years 1800 to 1950, UNIGME (a collaboration among UNICEF, WHO, the UN Population Division, and the World Bank) for years 1950 to 2016, and UN POP (World Population Prospects 2019) for projections up to 2100.
 
@@ -98,7 +98,7 @@ We pivoted the data to be longer so it can be easily analyzed (on mortality rate
 
 ### Variable Description
 
-The first variable in our joined data set is "country", which specifies the country that the following data describes. The next variable is "Year", which specifies the year in which the following data was collected. In our data, we limited our "Year" variable from 1950-present because many countries did not exist and therefore had missing data prior to then. The "Mortality Rate" variable represents the number of deaths of children under 5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the gross domestic product per person. The data for "GDP Per Capita" was also adjusted for differences in purchasing power.
+The first variable in our joined data set is "country", which specifies the country that the following data describes. The next variable is "Year", which specifies the year in which the following data was collected. In our data, we limited our "Year" variable from 1950-present because many countries did not exist and therefore had missing data prior to then. The "Mortality Rate" variable represents the number of deaths of children under 5 years old per 1000 live births. Finally, the "GDP Per Capita" variable represents the gross domestic product per person in USD. The data for "GDP Per Capita" was also adjusted for differences in purchasing power.
 
 According to the International Monetary Fund, GDP is a monetary measure of the market value of all the final goods and services produced in a specific time period by a country or countries. [GDP](https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/gross-domestic-product-GDP) is often used by the government of a single country to measure its economic health.
 
@@ -108,11 +108,9 @@ We also expect a significant decrease in child mortality rates as time progresse
 
 ## Linear Regression
 
-In our study, we employ linear regression to examine the potential impact of GDP per capita on child mortality rates. Linear regression is an appropriate statistical method for this analysis as it allows us to model the relationship between a continuous response variable and one or more explanatory variables. We hypothesize that GDP per capita (explanatory variable, x) inversely affects the child mortality rate (response variable, y\^​), with the expectation that higher GDP per capita is associated with lower child mortality rates. In order to establish whether linear regression was appropriate, we revisited our LINE assumptions:
+In our study, we employ linear regression to examine the potential impact of GDP per capita on child mortality rates. Linear regression is an appropriate statistical method for this analysis as it allows us to model the relationship between a continuous response variable and one or more explanatory variables. We hypothesize that GDP per capita (explanatory variable, $x$) inversely affects the child mortality rate (response variable, $y$), with the expectation that higher GDP per capita is associated with lower child mortality rates.
 
-We made two graphs to examine and visualize the relationship between GDP per Capita and Child Mortality Rate. We want to see how GDP per Capita (the explanatory variable) potentially affects the Child Mortality Rate (the response variable).
-
-As a preliminary check, we created two scatterplots to visually assess the relationship between GDP per capita and the Child Mortality Rate over time. Our aim was to discern the form, direction, strength, and presence of any unusual observations in the relationship between these two variables.\
+As a preliminary check, we created two scatterplots to visually assess the relationship between GDP per capita and the Child Mortality Rate over time. Our aim was to discern the form, direction, strength, and presence of any unusual observations in the relationship between these two variables.
 
 ```{r}
 # | code-fold: true
@@ -132,11 +130,11 @@ year_avgs |>
   ggplot(aes(x = Avg_GDP_Per_Capita, y = Avg_Mortality_Rate)) +
   geom_point(alpha = 0.5, color = 'blue') +
   theme_minimal() +
-  labs(x = "Average GDP Per Capita", y = "Average Mortality Rate",
+  labs(x = "Average GDP Per Capita (in USD)", y = "Average Mortality Rate",
        title = "Average Mortality Rate vs Average GDP Per Capita by Country")
 ```
 
-The scatterplot of average GDP per capita against average mortality rate shows a general downward trend, suggesting a negative correlation where higher GDP per capita is associated with lower child mortality rates. The relationship does exhibit a non-linear form, with the strength of the relationship varying across the range of GDP values. Notably, some countries with similar GDP per capita exhibit a wide range of mortality rates, indicating other factors may influence mortality beyond GDP alone.
+The scatterplot above of average GDP per capita against average mortality rate shows a general curved downward trend, suggesting a negative correlation where higher GDP per capita is associated with lower child mortality rates. The relationship does exhibit a non-linear form, with the strength of the relationship varying across the range of GDP values. Notably, some countries with similar GDP per capita exhibit a wide range of mortality rates, indicating other factors may influence mortality beyond GDP alone.
 
 ```{r}
 # | code-fold: true
@@ -146,7 +144,7 @@ joined_df |>
   geom_point(alpha = 0.25, color = 'purple') +
   facet_wrap(~ Decade, scales = "free") +
   labs(title = "GDP Per Capita vs Child Mortality Rate Over Time",
-       x = "GDP Per Capita",
+       x = "GDP Per Capita (in USD)",
        y = "Mortality Rate") +
   theme_minimal()
 ```
@@ -156,19 +154,20 @@ joined_df |>
   mutate(Decade = floor(Year / 10) * 10) |>
   ggplot(aes(x = `GDP Per Capita`, y = `Mortality Rate`)) +
   geom_point(alpha = 0.25, color = 'purple') +
- labs(title = 'Year: {frame_time}', x = 'GDP Per Capita', y = 'Mortality Rate') +
-  transition_time(as.integer(Year)) +
+ labs(title = 'Year: {frame_time}', x = 'GDP Per Capita (in USD)', y = 'Mortality Rate') +
+  transition_time(Decade) +
   ease_aes('linear')
 ```
 
-The second graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a similar concave shape. While the overall shape of the relationship between the variables is similar across decades, it's evident that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
+The second graph plots the GDP per capita per against the child mortality rate and is faceted by decade in order to see how the relationship between the two variables change over time. At a glance, it does not appear that the relationship between the two variables change drastically over the decades as all of the grids have a are similar in form and direction, all having a downward concave shape. However, we do see that the density of points on the left side of the plots decreases over time especially from 1950-1970 which could possibly indicate the relationship between the variables strengthening. While the overall shape of the relationship between the variables is similar across decades, it's evident that the actual numerical values do vary over time, as indicated by the differing scales on each graph.
 
-In evaluating the appropriateness of the model, we revisit out LINE assumptions;\
-**Linearity**: The relationship between GDP per capita and child mortality rate appears linear, **Independence**: Observations are independent of each other, **Normality**: The residuals of the model are normally distributed, **Equal Variance**: The variance of the error terms is constant across values of GDP per capita.
+In evaluating the appropriateness of the model, we consider the LINE assumptions: **Linearity**: The relationship between GDP per capita and child mortality rate appears linear, **Independence**: Observations are independent of each other, **Normality**: The residuals of the model are normally distributed, **Equal Variance**: The variance of the error terms is constant across values of GDP per capita.
 
 Based on our scatter plots so far, the model does not appear to be very linear, and instead exhibits the shape of either a logarithmic function or of exponential decay. We can however confirm that the data are independent: it's unlikely that American child mortality has an effect on Angolan or Brazilian child mortality. Based on trade relationships though, it is possible that American, British, and German GDPs may have relationships with each other.
 
 ### Regression and Model Fit
+
+In addition to the visualizations, we also fitted the data to a linear regression model to obtain the regression equation.
 
 ```{r}
 # | code-fold: true
@@ -180,9 +179,11 @@ mortality_regression <- tidy(mortalitygdp_lm)
 kable(mortality_regression, caption = "GDP Per Capita Regression Model")
 ```
 
-Based on the results of our linear regression, we use the equation $$\hat{y} = 128 - 0.00254x$$ to represent the relationship between GDP and child mortality. In this model, $\hat{y}$ represents the predicted child mortality rate, $x$ represents represents the GDP per capita, $b0$ (intercept) indicates the child mortality rate when GDP per capita is zero, and $b1$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita.
+Based on the results of our linear regression, we use the equation $${y} = 128 - 0.00254x + 5.3$$ to represent the relationship between GDP and child mortality. In this model, ${y}$ represents the predicted child mortality rate, $x$ represents represents the GDP per capita, $b0$ (intercept) indicates the child mortality rate when GDP per capita is zero, $b1$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita, and ε represents the error.
 
-We find that the average child mortality rate is 128.4 when GDP is zero. We also find that, holding other factors constant, a one-unit (\$1000 USD) increase in GDP corresponds to the child mortality rate decreasing -0.0025 on average. It's important to note that the interpretation of the slope coefficient involves units from both variables, confirming the validity of using different scales in our analysis.
+We find that the average child mortality rate is 128.4 when GDP is zero. We also find that, holding other factors constant, a one-unit (\$1 USD) increase in GDP corresponds to the child mortality rate decreasing -0.0025 on average.
+
+In addition to visually assessing the appropriateness of a linear regression model, we will also evaluate it by looking at the amount of variability in the response, fitted, and residual values. To do this, we generate the variance for each and based on those numbers, evaluate the quality of the model.
 
 ```{r}
 # | code-fold: true
@@ -196,13 +197,13 @@ variance_table <- data.frame(
 kable(variance_table, caption = "Variance Table") 
 ```
 
-The variance table derived from our model's residuals allows us to calculate the R-squared using the formula $R^2 = \frac{{\text{var}( \hat{y})}}{{\text{var}(y)}}$, with $\hat{y}$ being the variance of the fitted values and $y$ being the variance of the response values. Plugging these values into our formula, we get an $R^2$ value of approximately 0.3258. This indicates that approximately 32.58% of the variance in child mortality rates is explained by GDP per capita. While this suggests a significant relationship, it also highlights the presence of other factors affecting child mortality that are not captured by GDP per capita alone. The measurement of child mortality rates was based on the probability of dying between birth and age 5 per 1,000 live births, providing a standardized metric for international health comparisons.
+The variance table derived from our model allows us to calculate the R-squared using the formula $R^2 = \frac{{\text{var}( \hat{y})}}{{\text{var}(y)}}$, with $\hat{y}$ being the variance of the fitted values and $y$ being the variance of the response values. Plugging these values into our formula, we get an $R^2$ value of approximately 0.3258. This indicates that approximately 32.58% of the variance in child mortality rates is explained by GDP per capita. This suggests that the model captures a moderate amount of the variation in the dependent variable. It is then probable that there is a presence of other factors affecting child mortality that is not captured by GDP per capita alone as there is still a significant amount of unexplained variability. The measurement of child mortality rates was based on the probability of dying between birth and age 5 per 1,000 live births, providing a standardized metric for international health comparisons. Overall, these results suggest that the quality of the model is average, because it explains some variation in the dependent variable, but does not capture a significant amount of it.
 
 ## Simulation
 
 ### Visualizing Simulations from the Model
 
-In our analysis, we assessed the robustness of our linear regression model by generating simulated data, incorporating the variability estimated from the model\'s residuals. This simulation allows us to envision how the model might perform under different scenarios that align with the observed variance. If the observed and simulated data closely resemble each other, it reinforces the model\'s adequacy in capturing the essence of the relationship between GDP and mortality rates. However, the side-by-side plots reveal the observed data's tighter clustering at lower GDP values, diverging at higher values, whereas the simulated data display a more uniform dispersion. This discrepancy suggests the presence of non-linearities or varying error terms across the GDP spectrum that the linear model does not account for, indicating that alternative models may provide a more nuanced understanding of the data.
+In our analysis, we assessed the robustness of our linear regression model by generating simulated data, incorporating the variability estimated from the model's residuals. This simulation allows us to envision how the model might perform under different scenarios that align with the observed variance. If the observed and simulated data closely resemble each other, it reinforces the model's adequacy in capturing the essence of the relationship between GDP and mortality rates. However, the side-by-side plots reveal the observed data's tighter clustering at lower GDP values, diverging at higher values, whereas the simulated data display a more uniform dispersion. This discrepancy suggests the presence of non-linearities or varying error terms across the GDP spectrum that the linear model does not account for, indicating that alternative models may provide a more nuanced understanding of the data.
 
 ```{r}
 # 1. generate predictions using  predict() 
