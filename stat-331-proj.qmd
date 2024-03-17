@@ -148,12 +148,13 @@ joined_df |>
 ```
 
 ```{r}
+# | code-fold: true
 joined_df |>
   mutate(Decade = floor(Year / 10) * 10) |>
   ggplot(aes(x = `GDP Per Capita`, y = `Mortality Rate`)) +
   geom_point(alpha = 0.25, color = 'purple') +
  labs(title = 'Year: {frame_time}', x = 'GDP Per Capita (in USD)', y = 'Child Mortality Rate') +
-  transition_time(Decade) +
+  transition_time(as.integer(Year)) +
   ease_aes('linear')
 ```
 
@@ -206,6 +207,7 @@ In this portion of the analysis, we will assess the robustness of our linear reg
 However, after obtaining and graphing the simulated data, the side-by-side plots reveal the observed data's tighter clustering at lower GDP values, diverging at higher values, whereas the simulated data display a more uniform dispersion. The observed data also has a downward curved form, whereas the simulated data has a more downward linear form. This discrepancy suggests the presence of non-linearities or varying error terms across the GDP spectrum that the linear model does not account for, indicating that alternative models may provide a more nuanced understanding of the data, and that our current linear regression model may not be the best fit.
 
 ```{r}
+# | code-fold: true
 # 1. generate predictions using  predict() 
 predictions <- predict(mortalitygdp_lm, newdata = year_avgs)
 
@@ -249,6 +251,7 @@ library(patchwork)
 To further assess our model, we generated 1000 simulated datasets using the model and regressed it against the observed dataset, retaining the $R^2$ value from each.
 
 ```{r}
+# | code-fold: true
 
 sd <- sigma(mortalitygdp_lm)
 noise <- function(x, mean = 0, sd){
