@@ -203,7 +203,9 @@ The variance table derived from our model allows us to calculate the R-squared u
 
 ### Visualizing Simulations from the Model
 
-In our analysis, we assessed the robustness of our linear regression model by generating simulated data, incorporating the variability estimated from the model's residuals. This simulation allows us to envision how the model might perform under different scenarios that align with the observed variance. If the observed and simulated data closely resemble each other, it reinforces the model's adequacy in capturing the essence of the relationship between GDP and mortality rates. However, the side-by-side plots reveal the observed data's tighter clustering at lower GDP values, diverging at higher values, whereas the simulated data display a more uniform dispersion. This discrepancy suggests the presence of non-linearities or varying error terms across the GDP spectrum that the linear model does not account for, indicating that alternative models may provide a more nuanced understanding of the data.
+In this portion of the analysis, we will assess the robustness of our linear regression model by generating simulated data from the linear model, and comparing it with our observed data. This simulation allows us to envision how the model might perform under different scenarios that align with the observed variance. If the observed and simulated data closely resemble each other, it reinforces the model's adequacy in capturing the essence of the relationship between GDP and mortality rates.
+
+However, after obtaining and graphing the simulated data, the side-by-side plots reveal the observed data's tighter clustering at lower GDP values, diverging at higher values, whereas the simulated data display a more uniform dispersion. The observed data also has a downward curved form, whereas the simulated data has a more downward linear form. This discrepancy suggests the presence of non-linearities or varying error terms across the GDP spectrum that the linear model does not account for, indicating that alternative models may provide a more nuanced understanding of the data, and that our current linear regression model may not be the best fit.
 
 ```{r}
 # 1. generate predictions using  predict() 
@@ -224,7 +226,7 @@ observed_plot <- ggplot(year_avgs, aes(x = Avg_GDP_Per_Capita, y = Avg_Mortality
   geom_point(aes(color = "Observed"), alpha = 0.6) +
   geom_smooth(method = "lm", se = TRUE, color = "blue", linetype = "dashed") +
   theme_minimal() +
-  labs(title = "Observed Average Mortality Rate vs. Average GDP Per Capita",subtitle = "Average Mortality Rate", x= "Average GDP Per Capita", y = "",
+  labs(title = "Observed",subtitle = "Average Child Mortality Rate", x= "Average GDP Per Capita ($)", y = "",
        color = "Data Type")
 
 
@@ -234,7 +236,7 @@ simulated_plot <- ggplot(simulated_year_avgs, aes(x = Avg_GDP_Per_Capita, y = Si
   geom_point(aes(color = "Simulated"), alpha = 0.6) +
   geom_smooth(method = "lm", se = TRUE, color = "red", linetype = "dashed") +
   theme_minimal() +
-  labs(title = "Simulated Average Mortality Rate vs. Average GDP Per Capita", subtitle = "Simulated Mortality Rate", x= "Average GDP Per Capita", y = "",
+  labs(title = "Simulated", subtitle = "Average Child Mortality Rate", x= "Average GDP Per Capita ($)", y = "",
        color = "Data Type")
 
 
@@ -248,6 +250,8 @@ library(patchwork)
 ```
 
 ### Generating Multiple Predictive Checks
+
+To further assess our model, we generated 1000 simulated datasets using the model and regressed it against the observed dataset, retaining the $R^2$ value from each.
 
 ```{r}
 
@@ -285,7 +289,7 @@ sim_r_sq <- sim_r_sq[names(sim_r_sq) != "Avg_Mortality_Rate"]
 tibble(sims = sim_r_sq) |> 
   ggplot(aes(x = sims)) + 
   geom_histogram(binwidth = 0.025) +
-  labs(x = expression("Simulated"~ R^2),
+  labs(x = expression(R^2 ~ "values"),
        y = "",
        subtitle = "Number of Simulated Models") +
   theme_bw()
@@ -295,4 +299,4 @@ tibble(sims = sim_r_sq) |>
 
 ```
 
-The graph represents the distribution of R squared for all linear regression with all of the simulated data sets. With a roughly normal distribution skewed slightly to the left, it suggests that while many models demonstrate moderate explanatory power, there's notable variability in their effectiveness in capturing the relationship between average GDP per capita and average mortality rate. The distribution being centered around 0.1 indicates that, on average, the models explain approximately 10% of the variability in average GDP per capita. This implies that while the model captures a portion of the variation, there's still substantial unexplained variability. Therefore, while the model provides insights into the relationship between the variables, there's room for improvement to increase its predictive accuracy.
+The graph represents the distribution of $R^2$s from all the regressions on the simulated data sets. With a roughly normal distribution skewed slightly to the left, it suggests that while many of the models demonstrate moderate explanatory power, there's notable variability in their effectiveness in capturing the relationship between average GDP per capita and average mortality rate. The distribution being centered around 0.1 indicates that, on average, the models explain approximately 10% of the variability in average GDP per capita. This implies that while the model captures a portion of the variation, there's still substantial unexplained variability. Therefore, while the model provides some insight into the relationship between GDP per capita and Child Mortality Rate, the predictive power of the models, on average, is relatively low.
