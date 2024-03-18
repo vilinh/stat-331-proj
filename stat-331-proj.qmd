@@ -1,7 +1,7 @@
 ---
 title: "Investigation into the Relationship between GDP and Child Mortality Rates over Time"
 subtitle: "STAT 331 Final Project"
-author: "Alex Sullivan, Megan Kerner, Isabelle Phraner, Vi-Linh Vu"
+authors: "Alex Sullivan, Megan Kerner, Isabelle Phraner, Vi-Linh Vu"
 format: 
   html:
     embed-resources: true
@@ -297,4 +297,4 @@ tibble(sims = sim_r_sq) |>
 
 ```
 
-The graph represents the distribution of $R^2$s from all the regressions on the simulated data sets. With a roughly normal distribution skewed slightly to the left, it suggests that while many of the models demonstrate moderate explanatory power, there's notable variability in their effectiveness in capturing the relationship between average GDP per capita and average mortality rate. The distribution being centered around 0.1 indicates that, on average, the models explain approximately 10% of the variability in average GDP per capita. This implies that while the model captures a portion of the variation, there's still substantial unexplained variability. Therefore, while the model provides some insight into the relationship between GDP per capita and Child Mortality Rate, the predictive power of the models, on average, is relatively low.
+The distribution depicted in the graph illustrates the spread of $R^2$ values derived from numerous regression analyses conducted on simulated datasets. Characterized by a roughly normal shape slightly skewed to the left, the distribution suggests that a significant portion of the regression models demonstrate moderate explanatory power. The distribution being centered around 0.1 indicates that, on average, the models explain approximately 10% of the variability in average child mortality rate. This implies that while the model captures a portion of the variation, there's still substantial unexplained variability, suggesting that factors beyond GDP per capita contribute significantly to variations in child mortality rates. Therefore, while the model provides some insight into the relationship between GDP per capita and child mortality rate, the predictive power of the models, on average, is relatively low, so they may have limited utility in accurately predicting child mortality rates based solely on GDP per capita.
