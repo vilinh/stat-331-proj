@@ -15,4 +15,4 @@ This project explores various statistical methods and linear regression applied 
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/your-username/statistics-final-project.git
+git clone https://github.com/vilinh/stat-331-proj.git
