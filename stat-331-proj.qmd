@@ -28,8 +28,8 @@ library(broom)
 library(purrr)
 library(knitr)
 library(gganimate)
-child_mortality <- read_csv("child_mortality_0_5_year_olds_dying_per_1000_born.csv")
-GDP_per_Cap <- read_csv("gdp_pcap.csv")
+child_mortality <- read_csv("data/child_mortality_0_5_year_olds_dying_per_1000_born.csv")
+GDP_per_Cap <- read_csv("data/gdp_pcap.csv")
 ```
 
 ## Data Description and Cleaning Process
