@@ -178,7 +178,7 @@ mortality_regression <- tidy(mortalitygdp_lm)
 kable(mortality_regression, caption = "GDP Per Capita Regression Model")
 ```
 
-Based on the results of our linear regression, we use the equation $${y} = 128 - 0.00254x + 5.3$$ to represent the relationship between GDP and child mortality. In this model, ${y}$ represents the predicted child mortality rate, $x$ represents represents the GDP per capita, $b0$ (intercept) indicates the child mortality rate when GDP per capita is zero, $b1$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita, and ε represents the error.
+Based on the results of our linear regression, we use the equation $${\hat{y}} = 128 - 0.00254x$$ to represent the relationship between GDP and child mortality. In this model, ${\hat{y}}$ represents the predicted child mortality rate, $x$ represents represents the GDP per capita, $b0$ (intercept) indicates the child mortality rate when GDP per capita is zero, and $b1$ (slope) represents the change in child mortality rate for a one-unit increase in GDP per capita.
 
 We find that the average child mortality rate is 128.4 when GDP is zero. We also find that, holding other factors constant, a one-unit (\$1 USD) increase in GDP corresponds to the child mortality rate decreasing -0.0025 on average.
 
